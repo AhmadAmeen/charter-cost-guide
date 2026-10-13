@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE_NAME, SITE_URL } from '../../config';
+
+const url = `${SITE_URL}/editorial-policy/`;
+---
+
+<Base
+  title="Editorial Policy"
+  description="Editorial policy: how Charter Cost Guide chooses sources, dates every price table, reviews guides quarterly and corrects errors in our charter content."
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Editorial policy', href: '/editorial-policy/' }]} />
+    <h1>Editorial Policy</h1>
+    <h2>How we choose sources</h2>
+    <p>Our guides are compiled from published provider information: broker and operator rate pages, charter cost guides and official documents. We prefer primary sources and compare at least two independent sources before publishing a price range.</p>
+    <h2>Dates on every price</h2>
+    <p>Every price table shows the date its data was collected. Prices in yacht and private jet charter move with season, route and availability, so a number without a date is not useful. We review price tables quarterly and update the "last updated" date on each guide.</p>
+    <h2>Corrections</h2>
+    <p>If you spot a mistake, tell us and we will check it against the cited sources. When we are wrong, we correct the page and note the correction.</p>
+    <h2>AI use</h2>
+    <p>We may use AI tools to help draft and organise content. A human editor checks every figure against its cited sources before publishing.</p>
+    <h2>Independence</h2>
+    <p>We are not a broker or an operator and we do not sell charters. Affiliate commissions do not influence what our guides say. Read our <a href="/affiliate-disclosure/">affiliate disclosure</a> for the full picture.</p>
+  </div>
+</Base>

@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { approvedPrograms } from '../../data/programs';
+import { SITE_URL } from '../../config';
+
+const url = `${SITE_URL}/affiliate-disclosure/`;
+const approved = approvedPrograms();
+---
+
+<Base
+  title="Affiliate Disclosure"
+  description="Learn how Charter Cost Guide earns money: some links are affiliate links, commissions are paid by providers, and prices never change for readers."
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Affiliate disclosure', href: '/affiliate-disclosure/' }]} />
+    <h1>Affiliate Disclosure</h1>
+    <p>Some of the links on this site are affiliate links. That means that if you request a quote or make a booking through one of those links, the provider may pay us a commission.</p>
+    <p>Commissions are paid by the provider, not by you. They do not change the price you pay, and they do not influence what our guides say. We do not accept payment to change a recommendation, a price table or a conclusion.</p>
+    <p>Affiliate links on this site always point to our own redirect addresses (starting with /go/), carry a clear "Sponsored link" label, and are marked so search engines know they are commercial.</p>
+    <h2>Current affiliate programs</h2>
+    {approved.length > 0 ? (
+      <ul>
+        {approved.map(([key, program]) => (
+          <li><a href={`/go/${key}`} rel="sponsored nofollow noopener" target="_blank">{program.name}</a></li>
+        ))}
+      </ul>
+    ) : (
+      <p>No affiliate programs are currently active on this site. This list updates automatically when a program is approved.</p>
+    )}
+  </div>
+</Base>

@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE_NAME, SITE_URL, HAS_CONTACT_EMAIL, CONTACT_EMAIL } from '../../config';
+
+const url = `${SITE_URL}/privacy/`;
+const contactLine = HAS_CONTACT_EMAIL
+  ? `You can contact us at ${CONTACT_EMAIL} to request deletion of any personal data you have shared with us.`
+  : 'Our contact email is coming soon; please check back shortly if you need to reach us about your data.';
+---
+
+<Base
+  title="Privacy Policy"
+  description="Privacy policy for Charter Cost Guide: what little data we collect, cookieless analytics, affiliate cookies and how to reach us about your data."
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Privacy', href: '/privacy/' }]} />
+    <h1>Privacy Policy</h1>
+    <p>This is a template and should be reviewed by the owner.</p>
+    <h2>What we collect</h2>
+    <p>This site is designed to collect as little personal data as possible. We do not run user accounts, comments or tracking pixels of our own.</p>
+    <h2>Analytics</h2>
+    <p>We use Cloudflare Web Analytics, which is cookieless and does not track you across sites. It tells us which pages are visited so we can improve our guides.</p>
+    <h2>Newsletter</h2>
+    <p>If you sign up for our newsletter, our newsletter provider stores your email address so we can send you the checklist and guide updates. You can unsubscribe at any time using the link in any email.</p>
+    <h2>Affiliate partners</h2>
+    <p>If you click an affiliate link and continue to a provider's site, that provider may set its own cookies under its own privacy policy. We do not control those cookies.</p>
+    <h2>Contact and deletion</h2>
+    <p>{contactLine}</p>
+  </div>
+</Base>

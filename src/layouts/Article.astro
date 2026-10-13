@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import DisclosureBar from '../components/DisclosureBar.astro';
+import ShortAnswer from '../components/ShortAnswer.astro';
+import HeroFallback from '../components/HeroFallback.astro';
+import Toc from '../components/Toc.astro';
+import Faq from '../components/Faq.astro';
+import AffCta from '../components/AffCta.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Sources from '../components/Sources.astro';
+import Card from '../components/Card.astro';
+import { SITE_NAME, SITE_URL, EDITOR_DISPLAY_NAME, HAS_CONTACT_EMAIL, CONTACT_EMAIL } from '../config';
+
+interface Props {
+  entry: CollectionEntry<'guides'>;
+  headings: Array<{ depth: number; slug: string; text: string }>;
+  relatedEntries: CollectionEntry<'guides'>[];
+  readingMins: number;
+}
+
+const { entry, headings, relatedEntries, readingMins } = Astro.props;
+const { title, description, published, updated, faq, sources, shortAnswer, primaryProgram } = entry.data;
+const seoTitle = entry.data.seoTitle ?? title;
+const hubName = { 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[entry.data.hub];
+const hubHref = `/${entry.data.hub}/`;
+const url = `${SITE_URL}/${entry.data.hub}/${entry.data.urlSlug}/`;
+
+function fmt(d: Date): string {
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// Rough reading time is passed in by [...slug].astro (computed from the raw MDX body).
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  author: { '@type': 'Organization', name: EDITOR_DISPLAY_NAME },
+  publisher: { '@type': 'Organization', name: SITE_NAME },
+  datePublished: published.toISOString().slice(0, 10),
+  dateModified: updated.toISOString().slice(0, 10),
+  mainEntityOfPage: url,
+};
+
+const contactLine = HAS_CONTACT_EMAIL
+  ? `Spotted a mistake? Email ${CONTACT_EMAIL}.`
+  : 'Spotted a mistake? Our contact email is coming soon.';
+---
+
+<Base title={seoTitle} description={description} canonical={url} jsonLd={articleLd}>
+  <div class="container">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: hubName, href: hubHref }, { name: title, href: url.replace(SITE_URL, '') }]} />
+    <article class="prose">
+      <h1>{title}</h1>
+      <p class="article-meta">By {EDITOR_DISPLAY_NAME} · Updated {fmt(updated)} · {readingMins} min read</p>
+      <DisclosureBar />
+      <ShortAnswer text={shortAnswer} />
+      <div class="article-hero">
+        <HeroFallback label="" />
+      </div>
+    </article>
+    <div class="article-layout">
+      <div class="prose">
+        <Toc headings={headings} />
+        <slot />
+        {primaryProgram && <AffCta program={primaryProgram} context={entry.data.urlSlug} />}
+        {faq.length > 0 && <Faq items={faq} />}
+        <Sources items={sources} />
+        <p class="editorial-note">This guide is general information, not professional advice. Prices are indicative and change with season, route and availability. {contactLine}</p>
+      </div>
+      <Toc headings={headings} sticky={true} />
+    </div>
+    {relatedEntries.length > 0 && (
+      <section aria-label="Related guides">
+        <h2>Related guides</h2>
+        <div class="card-grid">
+          {relatedEntries.map((r) => (
+            <Card
+              kicker={hubName}
+              title={r.data.title}
+              description={r.data.description}
+              href={`/${r.data.hub}/${r.data.urlSlug}/`}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+    <Newsletter />
+  </div>
+</Base>
