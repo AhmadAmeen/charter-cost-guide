@@ -26,13 +26,17 @@ const trustItems = [  { title: 'Sources and dates on every guide', icon: 'M9 12l
   { title: 'We explain exactly how we earn money', icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9' },
 ];
 
-// Card imagery, keyed by guide urlSlug so new articles fall back to the SVG art.
+// Card imagery, keyed by hub/urlSlug so same-slug articles in different hubs
+// don't collide. New articles fall back to the SVG art.
 // Served from the photos' permanent free-CDN URLs (Unsplash/Pexels licenses allow
 // hotlinking the CDN files); auto=format serves WebP where supported.
 const guideImages = {
-  'cost': { src: 'https://images.unsplash.com/photo-1777305232325-09f48919f077?q=80&w=800&auto=format&fit=crop', alt: 'Yachts docked in a sunny marina' },
-  'how-to-charter-a-yacht': { src: 'https://images.unsplash.com/photo-1759069580619-3f03daa36157?q=80&w=800&auto=format&fit=crop', alt: 'Sailboats anchored in a calm bay' },
-  'greece-vs-croatia-vs-italy': { src: 'https://images.pexels.com/photos/31326411/pexels-photo-31326411.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Yachts docked in a Mediterranean marina' },
+  'yacht-charter/cost': { src: 'https://images.unsplash.com/photo-1777305232325-09f48919f077?q=80&w=800&auto=format&fit=crop', alt: 'Yachts docked in a sunny marina' },
+  'yacht-charter/how-to-charter-a-yacht': { src: 'https://images.unsplash.com/photo-1759069580619-3f03daa36157?q=80&w=800&auto=format&fit=crop', alt: 'Sailboats anchored in a calm bay' },
+  'yacht-charter/greece-vs-croatia-vs-italy': { src: 'https://images.pexels.com/photos/31326411/pexels-photo-31326411.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Yachts docked in a Mediterranean marina' },
+  'private-jets/cost': { src: 'https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=800&auto=format&fit=crop', alt: 'Private jet parked on the tarmac at sunset' },
+  'yacht-charter/how-brokers-get-paid': { src: 'https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?q=80&w=800&auto=format&fit=crop', alt: 'Two people shaking hands over a broker agreement' },
+  'yacht-charter/dubai-uae': { src: 'https://images.unsplash.com/photo-1768463852019-4881a17a1c0e?q=80&w=800&auto=format&fit=crop', alt: 'Yacht sailing in Dubai Marina at sunset with the city skyline' },
 };
 ---
 
@@ -114,7 +118,7 @@ const guideImages = {
         <h2>Latest guides</h2>
         <div class="card-grid">
           {guides.map((g) => {
-            const gi = guideImages[g.data.urlSlug];
+            const gi = guideImages[`${g.data.hub}/${g.data.urlSlug}`];
             return (
               <Card
                 kicker={{ 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[g.data.hub]}

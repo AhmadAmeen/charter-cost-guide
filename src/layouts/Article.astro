@@ -21,7 +21,7 @@ interface Props {
 }
 
 const { entry, headings, relatedEntries, readingMins } = Astro.props;
-const { title, description, published, updated, faq, sources, shortAnswer, primaryProgram } = entry.data;
+const { title, description, published, updated, faq, sources, shortAnswer, primaryProgram, heroImage, heroAlt } = entry.data;
 const seoTitle = entry.data.seoTitle ?? title;
 const hubName = { 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[entry.data.hub];
 const hubHref = `/${entry.data.hub}/`;
@@ -59,7 +59,11 @@ const contactLine = HAS_CONTACT_EMAIL
       <DisclosureBar />
       <ShortAnswer text={shortAnswer} />
       <div class="article-hero">
-        <HeroFallback label="" />
+        {heroImage ? (
+          <img src={heroImage} alt={heroAlt ?? ''} loading="eager" decoding="async" />
+        ) : (
+          <HeroFallback label="" />
+        )}
       </div>
     </article>
     <div class="article-layout">

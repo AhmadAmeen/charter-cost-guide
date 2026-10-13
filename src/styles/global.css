@@ -169,6 +169,7 @@ table.cost-table { width: 100%; border-collapse: collapse; background: var(--whi
 /* ---------- Article hero ---------- */
 .article-hero { border-radius: var(--r); overflow: hidden; margin: var(--s6) 0; background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); }
 .article-hero svg { width: 100%; height: auto; }
+.article-hero img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; display: block; }
 
 /* ---------- TOC ---------- */
 .toc { background: var(--white); border: 1px solid var(--line); border-radius: var(--r); padding: var(--s5); margin: var(--s6) 0; }
