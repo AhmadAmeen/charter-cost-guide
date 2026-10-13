@@ -31,6 +31,13 @@ function fmt(d: Date): string {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+// Card-size version of a guide's hero photo (heroes are w=1600+, cards need w=800).
+function cardImage(e: CollectionEntry<'guides'>): string | undefined {
+  const h = e.data.heroImage;
+  if (!h) return undefined;
+  return h.replace('w=3000', 'w=800').replace('w=2000', 'w=800').replace('w=1600', 'w=800');
+}
+
 // Rough reading time is passed in by [...slug].astro (computed from the raw MDX body).
 
 const articleLd = {
@@ -87,6 +94,8 @@ const contactLine = HAS_CONTACT_EMAIL
               title={r.data.title}
               description={r.data.description}
               href={`/${r.data.hub}/${r.data.urlSlug}/`}
+              image={cardImage(r)}
+              imageAlt={r.data.heroAlt}
             />
           ))}
         </div>

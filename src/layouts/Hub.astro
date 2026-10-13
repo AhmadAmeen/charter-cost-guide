@@ -21,6 +21,13 @@ const { title, description, intro, hub, guides, showAffCta = false, affCtaProgra
 const url = `${SITE_URL}/${hub}/`;
 const hubLabel = { 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[hub];
 const [featured, ...rest] = guides;
+
+// Card-size version of a guide's hero photo (heroes are w=1600+, cards need w=800).
+function cardImage(g: CollectionEntry<'guides'>): string | undefined {
+  const h = g.data.heroImage;
+  if (!h) return undefined;
+  return h.replace('w=3000', 'w=800').replace('w=2000', 'w=800').replace('w=1600', 'w=800');
+}
 ---
 
 <Base title={title} description={description} canonical={url}>
@@ -39,6 +46,8 @@ const [featured, ...rest] = guides;
             title={featured.data.title}
             description={featured.data.description}
             href={`/${featured.data.hub}/${featured.data.urlSlug}/`}
+            image={cardImage(featured)}
+            imageAlt={featured.data.heroAlt}
           />
         </div>
       </section>
@@ -61,6 +70,8 @@ const [featured, ...rest] = guides;
               title={g.data.title}
               description={g.data.description}
               href={`/${g.data.hub}/${g.data.urlSlug}/`}
+              image={cardImage(g)}
+              imageAlt={g.data.heroAlt}
             />
           ))}
         </div>
