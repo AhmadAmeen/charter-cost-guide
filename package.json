@@ -1,1 +1,19 @@
-{"dependencies":{"@astrojs/mdx":"^3.1.9","@astrojs/sitemap":"^3.2.1","@fontsource/inter":"^5.2.5","@fontsource/playfair-display":"^5.2.5","astro":"^4.16.18","sharp":"^0.34.2"},"name":"charter-cost-guide","private":true,"scripts":{"build":"node scripts/gen-redirects.mjs && astro build","dev":"astro dev","preview":"astro preview"},"type":"module","version":"1.0.0"}
+{
+  "dependencies": {
+    "@astrojs/mdx": "3.1.9",
+    "@astrojs/sitemap": "3.2.1",
+    "@fontsource/inter": "5.3.0",
+    "@fontsource/playfair-display": "5.3.0",
+    "astro": "4.16.19",
+    "sharp": "0.34.5"
+  },
+  "name": "charter-cost-guide",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/gen-redirects.mjs && astro build",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
