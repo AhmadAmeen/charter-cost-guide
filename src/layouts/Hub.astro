@@ -61,7 +61,7 @@ function cardImage(g: CollectionEntry<'guides'>): string | undefined {
     )}
 
     {rest.length > 0 && (
-      <section aria-label="All guides">
+      <section aria-label="All guides" style="margin-bottom: var(--s9);">
         <h2>All guides</h2>
         <div class="card-grid">
           {rest.map((g) => (
