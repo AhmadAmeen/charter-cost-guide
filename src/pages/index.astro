@@ -297,7 +297,7 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
         scope.querySelectorAll(tabSel).forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
         b.classList.add('active'); b.setAttribute('aria-selected','true');
         document.querySelectorAll('['+panelAttr+']').forEach(function(){});
-        var target = document.getElementById(b.dataset.etab || b.dataset.ptab);
+        var target = document.getElementById(b.dataset.etab ? 'est-' + b.dataset.etab : b.dataset.ptab);
         var sib = b.parentElement ? Array.prototype.slice.call(b.parentElement.parentElement.querySelectorAll('.dyn-est-body,.dyn-ptable')) : [];
         sib.forEach(function(p){ p.hidden = true; p.classList.remove('active'); });
         if(target){ target.hidden = false; target.classList.add('active'); }
