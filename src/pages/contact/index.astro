@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE_NAME, SITE_URL, HAS_CONTACT_EMAIL, CONTACT_EMAIL } from '../../config';
+
+const url = `${SITE_URL}/contact/`;
+---
+
+<Base
+  title="Contact"
+  description="Contact Charter Cost Guide: how to reach our editorial team with corrections, questions or feedback about our yacht and jet charter cost guides."How to contact the ${SITE_NAME} editorial team with corrections, questions or feedback about our charter cost guides.`}
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Contact', href: '/contact/' }]} />
+    <h1>Contact</h1>
+    {HAS_CONTACT_EMAIL ? (
+      <p>You can reach the {SITE_NAME} editorial team at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    ) : (
+      <p>Our contact email is coming soon. Please check back shortly.</p>
+    )}
+    <p>We read every message. For corrections to a price figure, please include the page URL and the source you are referring to.</p>
+  </div>
+</Base>

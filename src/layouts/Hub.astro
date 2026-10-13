@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Card from '../components/Card.astro';
+import AffCta from '../components/AffCta.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { SITE_URL } from '../config';
+
+interface Props {
+  title: string;
+  description: string;
+  intro: string;
+  hub: 'yacht-charter' | 'private-jets' | 'planning';
+  guides: CollectionEntry<'guides'>[];
+  showAffCta?: boolean;
+  affCtaProgram?: string;
+}
+
+const { title, description, intro, hub, guides, showAffCta = false, affCtaProgram = 'boatbookings' } = Astro.props;
+const url = `${SITE_URL}/${hub}/`;
+const hubLabel = { 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[hub];
+const [featured, ...rest] = guides;
+---
+
+<Base title={title} description={description} canonical={url}>
+  <div class="container">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: hubLabel, href: `/${hub}/` }]} />
+    <div class="narrow">
+      <h1>{title}</h1>
+      <p class="lede">{intro}</p>
+    </div>
+
+    {featured ? (
+      <section aria-label="Featured guide" style="margin: var(--s7) 0;">
+        <div class="card-grid" style="grid-template-columns: 1fr;">
+          <Card
+            kicker={`Featured · ${hubLabel}`}
+            title={featured.data.title}
+            description={featured.data.description}
+            href={`/${featured.data.hub}/${featured.data.urlSlug}/`}
+          />
+        </div>
+      </section>
+    ) : (
+      <section aria-label="Guides coming soon" style="margin: var(--s7) 0;">
+        <div class="short-answer">
+          <span class="label">Coming soon</span>
+          <p>We are researching the first guides for this section now. They will appear here as soon as they are published.</p>
+        </div>
+      </section>
+    )}
+
+    {rest.length > 0 && (
+      <section aria-label="All guides">
+        <h2>All guides</h2>
+        <div class="card-grid">
+          {rest.map((g) => (
+            <Card
+              kicker={hubLabel}
+              title={g.data.title}
+              description={g.data.description}
+              href={`/${g.data.hub}/${g.data.urlSlug}/`}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {showAffCta && <AffCta program={affCtaProgram} context={hub} />}
+    <Newsletter />
+  </div>
+</Base>

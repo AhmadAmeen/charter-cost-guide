@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0B1B2B"/>
+  <g fill="none" stroke="#B08D4F" stroke-width="1" opacity="0.14">
+    <path d="M-20 120 Q 180 80, 380 120 T 780 120 T 1180 120 T 1580 120"/>
+    <path d="M-20 250 Q 180 210, 380 250 T 780 250 T 1180 250 T 1580 250"/>
+    <path d="M-20 380 Q 180 340, 380 380 T 780 380 T 1180 380 T 1580 380"/>
+    <path d="M-20 510 Q 180 470, 380 510 T 780 510 T 1180 510 T 1580 510"/>
+  </g>
+  <g transform="translate(600 235)">
+    <rect x="-14" y="-14" width="28" height="28" transform="rotate(45)" fill="#B08D4F"/>
+    <text x="30" y="14" font-family="Georgia, serif" font-size="44" font-weight="600" fill="#F7F4EC">Charter Cost Guide</text>
+  </g>
+  <text x="600" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="30" fill="#D6BC85">Independent charter cost guides</text>
+</svg>

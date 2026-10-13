@@ -1,0 +1,25 @@
+---
+import { SITE_NAME } from '../config';
+---
+
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a class="wordmark" href="/" aria-label={`${SITE_NAME} home`}>
+      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><rect x="1.8" y="1.8" width="6.4" height="6.4" transform="rotate(45 5 5)" fill="#B08D4F" /></svg>
+      <span>{SITE_NAME}</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="nav-link" href="/yacht-charter/">Yacht Charter</a>
+      <a class="nav-link" href="/private-jets/">Private Jets</a>
+      <a class="nav-link" href="/planning/">Planning</a>
+    </nav>
+    <details class="nav-menu">
+      <summary aria-label="Open menu">Menu</summary>
+      <div class="nav-panel">
+        <a href="/yacht-charter/">Yacht Charter</a>
+        <a href="/private-jets/">Private Jets</a>
+        <a href="/planning/">Planning</a>
+      </div>
+    </details>
+  </div>
+</header>

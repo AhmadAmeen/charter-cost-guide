@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { SITE_NAME, SITE_URL, HAS_CONTACT_EMAIL, CONTACT_EMAIL } from '../../config';
+
+const url = `${SITE_URL}/about/`;
+const corrections = HAS_CONTACT_EMAIL
+  ? `Corrections: email ${CONTACT_EMAIL}.`
+  : 'Corrections: our contact email is coming soon.';
+---
+
+<Base
+  title="About"
+  description="About Charter Cost Guide: we write independent guides to yacht and private jet charter pricing. We are not a broker or operator and never sell charters."
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'About', href: '/about/' }]} />
+    <h1>About {SITE_NAME}</h1>
+    <p>We write independent guides to yacht and private jet charter pricing for first-time buyers, executive assistants and event planners. We are not a broker or an operator and we do not sell charters. Our guides are compiled from published provider information, and every price table shows its sources and date.</p>
+    <h2>How we make money</h2>
+    <p>This site is free to read. When you request a quote or book through some links, the provider may pay us a commission. It does not change the price you pay, and we do not accept payment to change what our guides say.</p>
+    <p>{corrections}</p>
+    <Newsletter />
+  </div>
+</Base>

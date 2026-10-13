@@ -1,0 +1,25 @@
+---
+import { programs, isApproved } from '../data/programs';
+import Newsletter from './Newsletter.astro';
+
+interface Props {
+  program: string;
+  context?: string;
+  blurb?: string;
+}
+const { program, context, blurb } = Astro.props;
+const p = programs[program];
+const approved = p && isApproved(program);
+---
+
+{approved && p ? (
+  <aside class="aff-cta" aria-label="Sponsored link" data-context={context}>
+    <span class="sponsored">Sponsored link</span>
+    <h3>{p.name}</h3>
+    {blurb && <p>{blurb}</p>}
+    <a class="btn btn-primary" href={`/go/${program}`} rel="sponsored nofollow noopener" target="_blank">{p.cta}</a>
+    <p class="fine-print">We may earn a commission if you book. Prices and availability are set by the provider.</p>
+  </aside>
+) : (
+  <Newsletter mini={true} />
+)}

@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import Hub from '../../layouts/Hub.astro';
+
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.hub === 'planning')
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+
+<Hub
+  title="Luxury Trip Planning"
+  description="Trip planning guides: checklists, cost comparisons and timing advice for group travel by yacht charter or private jet, all with sources and dates."
+  intro="Checklists, comparisons and timing guides for group trips by sea and air."
+  hub="planning"
+  guides={guides}
+  showAffCta={false}
+/>

@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE_NAME, SITE_URL } from '../../config';
+
+const url = `${SITE_URL}/terms/`;
+---
+
+<Base
+  title="Terms of Use"
+  description="Terms of use for Charter Cost Guide: our guides are general information only, not professional advice. We are not a broker or operator of any kind."
+  canonical={url}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Terms', href: '/terms/' }]} />
+    <h1>Terms of Use</h1>
+    <h2>Information only</h2>
+    <p>The content on {SITE_NAME} is general information for research purposes. It is not professional, legal, tax or financial advice, and it is not an offer to sell or arrange any charter.</p>
+    <h2>Not a broker or operator</h2>
+    <p>We are not a yacht broker, charter operator or aircraft operator. We do not sell charters, take bookings or hold client funds.</p>
+    <h2>No warranty</h2>
+    <p>Prices and availability change with season, route and operator. We work to keep our guides accurate and dated, but we make no warranty that any figure is current or complete. Always confirm details with the provider before you pay anything.</p>
+    <h2>Third-party sites</h2>
+    <p>Links to broker, operator and other third-party sites are provided for convenience. Those sites operate under their own terms and privacy policies, and we are not responsible for their content or actions.</p>
+  </div>
+</Base>
