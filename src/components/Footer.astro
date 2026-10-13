@@ -1,0 +1,45 @@
+---
+import { SITE_NAME, YEAR } from '../config';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="/" aria-label={`${SITE_NAME} home`} style="color: var(--ivory);">
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><rect x="1.8" y="1.8" width="6.4" height="6.4" transform="rotate(45 5 5)" fill="#B08D4F" /></svg>
+          <span>{SITE_NAME}</span>
+        </a>
+        <p>Independent yacht and private jet charter cost guides.</p>
+      </div>
+      <nav aria-label="Guides">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/yacht-charter/">Yacht Charter</a></li>
+          <li><a href="/private-jets/">Private Jets</a></li>
+          <li><a href="/planning/">Planning</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Site">
+        <h3>Site</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/editorial-policy/">Editorial policy</a></li>
+          <li><a href="/affiliate-disclosure/">Affiliate disclosure</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Legal">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© {YEAR} {SITE_NAME}. All rights reserved.</span>
+      <span>Some links are affiliate links. We may earn a commission at no extra cost to you.</span>
+    </div>
+  </div>
+</footer>

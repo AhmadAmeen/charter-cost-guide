@@ -1,0 +1,61 @@
+---
+import { SITE_NAME, SITE_URL, TAGLINE, CF_BEACON_TOKEN, GSC_VERIFICATION, HAS_ANALYTICS, HAS_GSC } from '../config';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import playfairWoff2 from '@fontsource/playfair-display/files/playfair-display-latin-600-normal.woff2?url';
+import interWoff2 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import '@fontsource/playfair-display/600.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  noindex?: boolean;
+}
+
+const { title, description, canonical, ogImage, jsonLd, noindex = false } = Astro.props;
+const pageTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
+const canonicalUrl = canonical ?? Astro.url.href;
+const image = ogImage ?? `${SITE_URL}/og-default.svg`;
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {HAS_GSC && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href={playfairWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {HAS_ANALYTICS && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}></script>}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Hub from '../../layouts/Hub.astro';
+
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.hub === 'private-jets')
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+
+<Hub
+  title="Private Jet Charter Guides"
+  description="Private jet charter guides: how per-hour pricing works, what empty leg flights really are, and how to check an operator before you pay anything."
+  intro="How per-hour pricing works, what empty legs really are, and how to check an operator before you pay."
+  hub="private-jets"
+  guides={guides}
+  showAffCta={true}
+  affCtaProgram="privatejetfinder"
+/>

@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Article from '../layouts/Article.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((entry) => ({
+    params: { slug: `${entry.data.hub}/${entry.data.urlSlug}` },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const allGuides = await getCollection('guides');
+const relatedEntries = entry.data.related
+  .map((slug) => allGuides.find((g) => g.data.urlSlug === slug))
+  .filter((g) => g !== undefined);
+
+const wordCount = entry.body.split(/\s+/).filter(Boolean).length;
+const readingMins = Math.max(3, Math.round(wordCount / 200));
+---
+
+<Article entry={entry} headings={headings} relatedEntries={relatedEntries} readingMins={readingMins}>
+  <Content />
+</Article>

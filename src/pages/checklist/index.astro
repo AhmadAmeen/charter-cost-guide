@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE_NAME, SITE_URL } from '../../config';
+
+const url = `${SITE_URL}/checklist/`;
+const before = [
+  'Dates and how flexible they are',
+  'Number of guests',
+  'Departure point and destination or region',
+  'Budget range',
+  'Must-haves (pets, accessibility, catering, Wi-Fi)',
+];
+const yachtQuote = [
+  'Base fee and charter period',
+  'APA percentage and what it covers',
+  'Taxes or VAT',
+  'Crew tip guidance',
+  'Extras included or excluded (water toys, Wi-Fi, special catering)',
+  'Cancellation terms',
+];
+const jetQuote = [
+  'Aircraft type',
+  'Flight time (billable hours)',
+  'Taxes and fees',
+  'Positioning or waiting charges',
+  'Cancellation terms',
+];
+---
+
+<Base
+  title="Charter Quote Checklist"
+  description="Printable charter quote checklist: the details to prepare before asking a broker for a yacht or private jet quote, plus what a complete quote shows."
+  canonical={url}
+>
+  <div class="container narrow">
+    <h1>Charter Quote Checklist</h1>
+    <p>Print this page and work through it before you ask any broker for a price. A good quote starts with good details.</p>
+    <h2>Before you ask: five details to prepare</h2>
+    <ul class="checklist">
+      {before.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2>What a complete yacht quote should show</h2>
+    <ul class="checklist">
+      {yachtQuote.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2>What a complete private jet quote should show</h2>
+    <ul class="checklist">
+      {jetQuote.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2>Compare before you commit</h2>
+    <ul class="checklist">
+      <li>Request quotes from two or three providers</li>
+      <li>Compare the quotes line by line, not just the headline price</li>
+      <li>Read the cancellation terms before paying any deposit</li>
+    </ul>
+    <p class="editorial-note">{SITE_NAME} — general information, not professional advice.</p>
+  </div>
+</Base>

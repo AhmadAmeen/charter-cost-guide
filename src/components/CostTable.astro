@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  columns: string[];
+  rows: string[][];
+  source: string;
+  dataAsOf: string;
+}
+const { title, columns, rows, source, dataAsOf } = Astro.props;
+---
+
+<div class="table-wrap" tabindex="0" role="region" aria-label={title}>
+  <table class="cost-table">
+    <caption>{title}</caption>
+    <thead>
+      <tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>{row.map((cell) => <td>{cell}</td>)}</tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="table-source">Indicative figures. Source: {source}. Data collected: {dataAsOf}.</p>

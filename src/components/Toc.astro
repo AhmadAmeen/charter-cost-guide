@@ -1,0 +1,26 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  headings: Heading[];
+  sticky?: boolean;
+}
+const { headings, sticky = false } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{items.length > 0 && (
+  <nav class={`toc${sticky ? ' toc-sticky' : ''}`} aria-label="Table of contents">
+    <p class="toc-title">On this page</p>
+    <ol>
+      {items.map((h) => (
+        <li class={h.depth === 3 ? 'toc-h3' : undefined}>
+          <a href={`#${h.slug}`}>{h.text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

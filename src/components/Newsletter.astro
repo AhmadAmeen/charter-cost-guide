@@ -1,0 +1,36 @@
+---
+import { NEWSLETTER_ACTION_URL, HAS_NEWSLETTER } from '../config';
+
+interface Props {
+  mini?: boolean;
+}
+const { mini = false } = Astro.props;
+---
+
+{HAS_NEWSLETTER && (
+  mini ? (
+    <aside class="newsletter-band" aria-label="Newsletter signup">
+      <h3 class="mt-0">Get the charter quote checklist</h3>
+      <p>A one-page checklist of what to prepare before you ask any broker for a price.</p>
+      <form class="newsletter-form" action={NEWSLETTER_ACTION_URL} method="post">
+        <label for="nl-email-mini">Email address</label>
+        <input id="nl-email-mini" type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+        <input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button class="btn btn-primary btn-sm" type="submit">Send me the checklist</button>
+      </form>
+      <p class="newsletter-note">No spam. Unsubscribe any time.</p>
+    </aside>
+  ) : (
+    <section class="newsletter-band" aria-label="Newsletter signup">
+      <h2>Get the charter quote checklist</h2>
+      <p>A one-page checklist of what to prepare before you ask any broker for a price, plus an occasional email when we update our cost guides.</p>
+      <form class="newsletter-form" action={NEWSLETTER_ACTION_URL} method="post">
+        <label for="nl-email">Email address</label>
+        <input id="nl-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+        <input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button class="btn btn-primary" type="submit">Send me the checklist</button>
+      </form>
+      <p class="newsletter-note">No spam. Unsubscribe any time.</p>
+    </section>
+  )
+)}
