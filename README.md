@@ -33,3 +33,4 @@ npm run build   # runs scripts/gen-redirects.mjs, then astro build -> dist/
   `src/content/config.ts`. Only link to pages that are already published.
 - One primary affiliate CTA per page max. Never invent prices, people,
   testimonials or program terms.
+
