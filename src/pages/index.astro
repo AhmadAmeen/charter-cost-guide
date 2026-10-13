@@ -21,11 +21,19 @@ const glanceRows = [
   ['Empty leg flights', 'Often cited at 25 to 75% off the full charter price, one-way only', 'Route, date flexibility'],
 ];
 
-const trustItems = [
-  { title: 'Sources and dates on every guide', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+const trustItems = [  { title: 'Sources and dates on every guide', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
   { title: 'Plain-English cost breakdowns', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
   { title: 'We explain exactly how we earn money', icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9' },
 ];
+
+// Card imagery, keyed by guide urlSlug so new articles fall back to the SVG art.
+// Served from the photos' permanent free-CDN URLs (Unsplash/Pexels licenses allow
+// hotlinking the CDN files); auto=format serves WebP where supported.
+const guideImages = {
+  'cost': { src: 'https://images.unsplash.com/photo-1777305232325-09f48919f077?q=80&w=800&auto=format&fit=crop', alt: 'Yachts docked in a sunny marina' },
+  'how-to-charter-a-yacht': { src: 'https://images.unsplash.com/photo-1759069580619-3f03daa36157?q=80&w=800&auto=format&fit=crop', alt: 'Sailboats anchored in a calm bay' },
+  'greece-vs-croatia-vs-italy': { src: 'https://images.pexels.com/photos/31326411/pexels-photo-31326411.jpeg?auto=compress&cs=tinysrgb&w=800', alt: 'Yachts docked in a Mediterranean marina' },
+};
 ---
 
 <Base
@@ -33,15 +41,8 @@ const trustItems = [
   description="Independent, plain-English guides to yacht and private jet charter costs, contracts and booking — with sourced prices and dates on every page."
 >
   <section class="hero band-dark" aria-label="Introduction">
-    <svg class="hero-waves" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g fill="none" stroke="#B08D4F" stroke-width="1" opacity="0.14">
-        <path d="M-20 100 Q 180 60, 380 100 T 780 100 T 1180 100 T 1580 100 T 1980 100" />
-        <path d="M-20 200 Q 180 160, 380 200 T 780 200 T 1180 200 T 1580 200 T 1980 200" />
-        <path d="M-20 300 Q 180 260, 380 300 T 780 300 T 1180 300 T 1580 300 T 1980 300" />
-        <path d="M-20 400 Q 180 360, 380 400 T 780 400 T 1180 400 T 1580 400 T 1980 400" />
-        <path d="M-20 500 Q 180 460, 380 500 T 780 500 T 1180 500 T 1580 500 T 1980 500" />
-      </g>
-    </svg>
+    <img class="hero-bg" src="https://images.unsplash.com/photo-1759020622116-d3c15827423d?q=70&w=1920&auto=format&fit=crop" alt="" fetchpriority="high" decoding="async" />
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="container">
       <div class="hero-inner hero-animate">
         <p class="eyebrow">Independent charter guides</p>
@@ -65,7 +66,7 @@ const trustItems = [
       ))}
     </section>
 
-    <section class="section" aria-label="Start here" style="padding-top: 0;">
+    <section class="section" aria-label="Start here" style="padding-top: var(--s7);">
       <h2>Start here</h2>
       <div class="card-grid">
         <Card
@@ -73,23 +74,29 @@ const trustItems = [
           title="Yacht charter costs"
           description="Base fee, APA, tax and tips explained with worked examples."
           href="/yacht-charter/cost/"
+          image="https://images.unsplash.com/photo-1774990044517-cff3f41a6ad9?q=80&w=800&auto=format&fit=crop"
+          imageAlt="Boats docked in a calm marina on a clear day"
         />
         <Card
           kicker="Private Jets"
           title="Private jet costs"
           description="What per-hour pricing really means for your trip."
           href="/private-jets/"
+          image="https://images.unsplash.com/photo-1759614581731-4c7090648de0?q=80&w=800&auto=format&fit=crop"
+          imageAlt="Private jet on the tarmac"
         />
         <Card
           kicker="Private Jets"
           title="Empty leg flights"
           description="When discounted one-way flights make sense, and when they do not."
           href="/private-jets/"
+          image="https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=800&auto=format&fit=crop"
+          imageAlt="Private jet on the tarmac at sunset"
         />
       </div>
     </section>
 
-    <section class="section narrow" aria-label="Charter prices at a glance" style="padding-top: 0;">
+    <section class="section narrow" aria-label="Charter prices at a glance" style="padding-top: var(--s7);">
       <h2>Charter prices at a glance</h2>
       <p>Indicative ranges compiled from published provider guides. Real quotes vary by season, route and operator.</p>
       <CostTable
@@ -103,17 +110,22 @@ const trustItems = [
     </section>
 
     {guides.length > 0 && (
-      <section class="section" aria-label="Latest guides" style="padding-top: 0;">
+      <section class="section" aria-label="Latest guides" style="padding-top: var(--s7);">
         <h2>Latest guides</h2>
         <div class="card-grid">
-          {guides.map((g) => (
-            <Card
-              kicker={{ 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[g.data.hub]}
-              title={g.data.title}
-              description={g.data.description}
-              href={`/${g.data.hub}/${g.data.urlSlug}/`}
-            />
-          ))}
+          {guides.map((g) => {
+            const gi = guideImages[g.data.urlSlug];
+            return (
+              <Card
+                kicker={{ 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[g.data.hub]}
+                title={g.data.title}
+                description={g.data.description}
+                href={`/${g.data.hub}/${g.data.urlSlug}/`}
+                image={gi?.src}
+                imageAlt={gi?.alt}
+              />
+            );
+          })}
         </div>
       </section>
     )}
