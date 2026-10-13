@@ -1,0 +1,24 @@
+---
+interface Source {
+  name: string;
+  url: string;
+  accessed: string;
+}
+interface Props {
+  items: Source[];
+}
+const { items } = Astro.props;
+---
+
+<section class="sources" aria-label="Sources and method">
+  <h2>Sources and method</h2>
+  <p>We compared published rates and guides from the sources below. Figures are indicative ranges, not quotes, and were collected on the dates shown with each source.</p>
+  <ol>
+    {items.map((s) => (
+      <li>
+        <a href={s.url} rel="noopener" target="_blank">{s.name}</a>
+        <span class="accessed"> — accessed {s.accessed}.</span>
+      </li>
+    ))}
+  </ol>
+</section>

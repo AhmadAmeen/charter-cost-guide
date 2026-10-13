@@ -1,0 +1,15 @@
+---
+import { programs, isApproved } from '../data/programs';
+
+interface Props {
+  program: string;
+}
+const { program } = Astro.props;
+const p = programs[program];
+---
+
+{p && isApproved(program) ? (
+  <a href={`/go/${program}`} rel="sponsored nofollow noopener" target="_blank"><slot /></a>
+) : (
+  <slot />
+)}

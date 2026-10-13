@@ -1,0 +1,28 @@
+---
+/**
+ * Fallback hero art (spec section 8): navy gradient with five horizontal
+ * sine-wave paths, brass stroke, low opacity. Used whenever no photo exists.
+ */
+interface Props {
+  label?: string;
+}
+const { label = 'Decorative wave pattern' } = Astro.props;
+const waves = [0, 1, 2, 3, 4].map((i) => {
+  const y = 100 + i * 100;
+  return `M-20 ${y} Q 180 ${y - 40}, 380 ${y} T 780 ${y} T 1180 ${y} T 1580 ${y} T 1980 ${y}`;
+});
+---
+
+<svg viewBox="0 0 1600 600" role="img" aria-label={label} preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B1B2B" />
+      <stop offset="1" stop-color="#1B3A57" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#heroBg)" />
+  <g fill="none" stroke="#B08D4F" stroke-width="1" opacity="0.14">
+    {waves.map((d) => <path d={d} />)}
+  </g>
+  <rect x="796" y="246" width="8" height="8" transform="rotate(45 800 250)" fill="#B08D4F" opacity="0.5" />
+</svg>

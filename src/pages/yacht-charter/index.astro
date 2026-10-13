@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Hub from '../../layouts/Hub.astro';
+
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.hub === 'yacht-charter')
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+
+<Hub
+  title="Yacht Charter Guides"
+  description="Yacht charter guides: what a charter costs, how crewed and bareboat charters differ, how to compare quotes and how to book without surprises."
+  intro="What a yacht charter costs, how crewed and bareboat charters differ, and how to book without surprises."
+  hub="yacht-charter"
+  guides={guides}
+  showAffCta={true}
+  affCtaProgram="boatbookings"
+/>

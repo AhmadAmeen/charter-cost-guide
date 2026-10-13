@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /go/
+Sitemap: https://charter-cost-guide.pages.dev/sitemap-index.xml
