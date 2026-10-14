@@ -1,5 +1,5 @@
 ---
-import { SITE_NAME, SITE_URL, TAGLINE, CF_BEACON_TOKEN, GSC_VERIFICATION, HAS_ANALYTICS, HAS_GSC } from '../config';
+import { SITE_NAME, SITE_URL, TAGLINE, CF_BEACON_TOKEN, GSC_VERIFICATION, GA4_MEASUREMENT_ID, HAS_ANALYTICS, HAS_GSC, HAS_GA4 } from '../config';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import playfairWoff2 from '@fontsource/playfair-display/files/playfair-display-latin-600-normal.woff2?url';
@@ -35,6 +35,8 @@ const image = ogImage ?? `${SITE_URL}/og-default.svg`;
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {HAS_GSC && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
+    {HAS_GA4 && <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}></script>}
+    {HAS_GA4 && <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','region':['EU','EEA','GB','CH']});gtag('js',new Date());gtag('config','${GA4_MEASUREMENT_ID}');`} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={pageTitle} />
@@ -58,5 +60,36 @@ const image = ogImage ?? `${SITE_URL}/og-default.svg`;
       <slot />
     </main>
     <Footer />
+    {HAS_GA4 && <script is:inline>
+      {`;(function(){
+        "use strict";
+        function ev(name, params){ if(typeof gtag==='function'){ try{ gtag('event', name, params||{}); }catch(e){} } }
+        // Affiliate outbound clicks: links tagged rel="sponsored" or data-partner
+        document.addEventListener('click', function(e){
+          var a = e.target && e.target.closest ? e.target.closest('a[rel~="sponsored"],a[data-partner]') : null;
+          if(!a) return;
+          ev('affiliate_click', {
+            partner: a.getAttribute('data-partner') || new URL(a.href, location.href).hostname,
+            link_url: a.href,
+            link_text: (a.textContent||'').trim().slice(0,120),
+            link_position: a.closest('table') ? 'comparison_table' : (a.closest('header') ? 'header' : (a.closest('footer') ? 'footer' : 'in_content')),
+            page_path: location.pathname
+          });
+        });
+        // Scroll depth: 25/50/75/100, once per threshold per page view
+        var marks = [25,50,75,100], hit = {};
+        function onScroll(){
+          var h = document.documentElement;
+          var pct = Math.round((h.scrollTop + innerHeight) / h.scrollHeight * 100);
+          marks.forEach(function(m){ if(pct >= m && !hit[m]){ hit[m]=1; ev('scroll_depth',{percent:m, page_path:location.pathname}); } });
+          if(hit[100]) window.removeEventListener('scroll', onScroll, {passive:true});
+        }
+        window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+        // Newsletter signup
+        document.querySelectorAll('.newsletter-form').forEach(function(f){
+          f.addEventListener('submit', function(){ ev('newsletter_signup',{method:'newsletter_form', page_path:location.pathname}); });
+        });
+      })();`}
+    </script>}
   </body>
 </html>

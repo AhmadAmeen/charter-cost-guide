@@ -272,6 +272,7 @@ const faqSchema = {
 <script>
 (function(){
   "use strict";
+  function ev(name, params){ if(typeof gtag==='function'){ try{ gtag('event', name, params||{}); }catch(e){} } }
   // ---------- estimator (real published ranges from our guides) ----------
   var YACHT = {
     bareboat:{cur:'€',low:3500,high:9000},
@@ -295,9 +296,19 @@ const faqSchema = {
     document.getElementById('jhours-v').textContent = h + (h>1?' hrs':' hr');
     document.getElementById('jout').textContent = '$'+fmt(Math.round(t.low*h*1.15))+' – $'+fmt(Math.round(t.high*h*1.15));
   }
-  ['ytype','yweeks'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='ytype'?'change':'input', yachtCalc); });
-  ['jtype','jhours'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='jtype'?'change':'input', jetCalc); });
+  ['ytype','yweeks'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='ytype'?'change':'input', function(){ yachtCalc(); estUsed('yacht'); }); });
+  ['jtype','jhours'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='jtype'?'change':'input', function(){ jetCalc(); estUsed('jet'); }); });
   yachtCalc(); jetCalc();
+  // estimator engagement: start on first input, complete debounced with result range
+  var estStarted = false, estTimer = null;
+  function estUsed(kind){
+    if(!estStarted){ estStarted = true; ev('estimator_start',{charter_type:kind, page_path:location.pathname}); }
+    clearTimeout(estTimer);
+    estTimer = setTimeout(function(){
+      var out = kind==='yacht' ? document.getElementById('yout') : document.getElementById('jout');
+      ev('estimator_complete',{charter_type:kind, estimate_range:(out&&out.textContent||'').trim(), page_path:location.pathname});
+    }, 2000);
+  }
   // ---------- tabs ----------
   function wireTabs(tabSel, panelAttr){
     document.querySelectorAll(tabSel).forEach(function(b){
@@ -332,7 +343,7 @@ const faqSchema = {
     q.addEventListener('click', function(){
       var item=q.parentElement, ans=item.querySelector('.dyn-faq-a'), open=item.classList.contains('open');
       document.querySelectorAll('.dyn-faq-item.open').forEach(function(o){ o.classList.remove('open'); o.querySelector('.dyn-faq-a').style.maxHeight=null; o.querySelector('.dyn-faq-q').setAttribute('aria-expanded','false'); });
-      if(!open){ item.classList.add('open'); ans.style.maxHeight=ans.scrollHeight+'px'; q.setAttribute('aria-expanded','true'); }
+      if(!open){ item.classList.add('open'); ans.style.maxHeight=ans.scrollHeight+'px'; q.setAttribute('aria-expanded','true'); ev('faq_expand',{question:q.textContent.trim().replace(/\+$/,'').trim().slice(0,140), page_path:location.pathname}); }
     });
   });
   // first FAQ answer open by default

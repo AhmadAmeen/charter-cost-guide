@@ -11,6 +11,7 @@ export const EDITOR_NAME = '';
 export const NEWSLETTER_ACTION_URL = '';
 export const CF_BEACON_TOKEN = '';
 export const GSC_VERIFICATION = '';
+export const GA4_MEASUREMENT_ID = '';
 
 export const YEAR = new Date().getFullYear();
 
@@ -20,3 +21,4 @@ export const HAS_CONTACT_EMAIL = CONTACT_EMAIL.length > 0;
 export const HAS_NEWSLETTER = NEWSLETTER_ACTION_URL.length > 0;
 export const HAS_ANALYTICS = CF_BEACON_TOKEN.length > 0;
 export const HAS_GSC = GSC_VERIFICATION.length > 0;
+export const HAS_GA4 = GA4_MEASUREMENT_ID.length > 0;
