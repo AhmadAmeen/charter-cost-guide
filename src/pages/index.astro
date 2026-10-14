@@ -9,14 +9,15 @@ const allGuides = await getCollection('guides');
 const bySlug = (slug: string) => allGuides.find((g) => g.data.urlSlug === slug);
 const hubLabel = (hub: string) => ({ 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[hub] ?? hub);
 
-// Trending picks (curated). guideImages map kept from previous homepage for card photos.
-const trending = [
-  { slug: 'crewed-vs-bareboat', badge: 'Most read' },
-  { slug: 'popular-routes-prices', badge: 'New' },
-  { slug: 'crew-tipping-guide', badge: 'Trending' },
-  { slug: 'charter-vs-first-class', badge: 'Planning' },
-  { slug: 'best-time-to-charter-by-destination', badge: 'Planning' },
-].map((t) => ({ ...t, guide: bySlug(t.slug) })).filter((t) => t.guide);
+// More guides (curated). guideImages map kept from previous homepage for card photos.
+const moreGuides = [
+  'crewed-vs-bareboat',
+  'popular-routes-prices',
+  'crew-tipping-guide',
+  'charter-vs-first-class',
+  'best-time-to-charter-by-destination',
+  'empty-leg-flights',
+].map(bySlug).filter((g) => g);
 
 const guideImages: Record<string, { src: string; alt: string }> = {
   'yacht-charter/cost': { src: 'https://images.unsplash.com/photo-1777305232325-09f48919f077?q=80&w=800&auto=format&fit=crop', alt: 'Yachts docked in a sunny marina' },
@@ -52,11 +53,25 @@ const guideImages: Record<string, { src: string; alt: string }> = {
   'private-jets/empty-leg-flights': { src: 'https://images.unsplash.com/photo-1678419214383-2391a9118c24?q=60&w=800&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', alt: 'Business jet approaching with landing gear down at sunset' },
 };
 const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: "What's the cheapest way to charter a yacht?", acceptedAnswer: { '@type': 'Answer', text: 'A bareboat sailing yacht in shoulder season — roughly €3,500–€9,000 per week before fuel — is the floor. You sail it yourself and need the right licence.' } },
+    { '@type': 'Question', name: 'How much cheaper are empty leg flights?', acceptedAnswer: { '@type': 'Answer', text: 'Discounts of 25–75% are commonly cited, and published examples show about 45–55%. The trade-off: fixed route, date and time, and the flight can change.' } },
+    { '@type': 'Question', name: 'What does APA mean on a yacht quote?', acceptedAnswer: { '@type': 'Answer', text: 'Advance Provisioning Allowance — typically 25–40% of the base fee, held upfront to cover fuel, food, dockage and drinks. Unused funds are refunded.' } },
+    { '@type': 'Question', name: 'Are taxes included in a yacht quote?', acceptedAnswer: { '@type': 'Answer', text: 'Usually not. Charter tax of 13–22% can apply on top of the base fee in many cruising areas, so ask before you compare quotes.' } },
+    { '@type': 'Question', name: 'What is a positioning flight?', acceptedAnswer: { '@type': 'Answer', text: 'When the aircraft has to fly empty to reach your departure airport, and that cost is often added to your quote. Always ask whether positioning is included.' } },
+    { '@type': 'Question', name: 'Is a private jet ever cheaper than first class?', acceptedAnswer: { '@type': 'Answer', text: 'Per seat, rarely — but for groups of 6+ on the right route, the per-person maths can get surprisingly close.' } },
+  ],
+};
 ---
 
 <Base
   title={SITE_NAME}
   description="Independent, plain-English guides to yacht and private jet charter costs, contracts and booking — with sourced prices and dates on every page."
+  jsonLd={faqSchema}
 >
   <!-- ============ HERO + ESTIMATOR ============ -->
   <section class="dyn-hero" aria-label="Introduction">
@@ -75,8 +90,8 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
       </div>
       <div class="dyn-est" id="estimator">
         <div class="dyn-est-tabs" role="tablist" aria-label="Estimate type">
-          <button class="dyn-est-tab active" data-etab="yacht" role="tab" aria-selected="true">⛵ Yacht estimate</button>
-          <button class="dyn-est-tab" data-etab="jet" role="tab" aria-selected="false">✈ Jet estimate</button>
+          <button class="dyn-est-tab active" data-etab="yacht" role="tab" aria-selected="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M12 3l7 10H5z"/><path d="M3 16h18l-2.5 4.5h-13z"/></svg> Yacht estimate</button>
+          <button class="dyn-est-tab" data-etab="jet" role="tab" aria-selected="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5L21.5 3.5l-8 19-2.8-7.7z"/><path d="M10.7 13.8l4.5 4.5"/></svg> Jet estimate</button>
         </div>
         <div class="dyn-est-body" id="est-yacht" role="tabpanel">
           <label for="ytype">Yacht type</label>
@@ -92,9 +107,9 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
             <input type="range" id="yweeks" min="1" max="4" value="1" step="1" aria-label="Charter duration in weeks" />
             <span class="dyn-est-val" id="yweeks-v">1 week</span>
           </div>
-          <div class="dyn-est-out"><span class="lbl">Estimated all-in</span><span class="num" id="yout">$21k – $63k</span></div>
-          <p class="dyn-est-note">Base fee × weeks × 1.4 (adds ~30% APA + ~10% tip). Indicative only.</p>
-          <a class="dyn-est-link" href="/yacht-charter/cost/">Read the full yacht cost guide →</a>
+          <div class="dyn-est-out"><span class="lbl">Estimated before tax</span><span class="num" id="yout">$21k – $63k</span></div>
+          <p class="dyn-est-note">Base fee × weeks × 1.4 (adds ~30% APA + ~10% tip). Before tax. Indicative only — season, route and availability move the total.</p>
+          <a class="dyn-est-link" href="/yacht-charter/cost/">See how we calculate this →</a>
         </div>
         <div class="dyn-est-body" id="est-jet" role="tabpanel" hidden>
           <label for="jtype">Aircraft size</label>
@@ -108,9 +123,9 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
             <input type="range" id="jhours" min="1" max="10" value="2" step="1" aria-label="Flight time in hours" />
             <span class="dyn-est-val" id="jhours-v">2 hrs</span>
           </div>
-          <div class="dyn-est-out"><span class="lbl">Estimated all-in</span><span class="num" id="jout">$8k – $15k</span></div>
+          <div class="dyn-est-out"><span class="lbl">Estimated before tax</span><span class="num" id="jout">$8k – $15k</span></div>
           <p class="dyn-est-note">Hourly rate × hours + ~15% taxes &amp; fees. Positioning can add more.</p>
-          <a class="dyn-est-link" href="/private-jets/cost/">Read the full jet cost guide →</a>
+          <a class="dyn-est-link" href="/private-jets/cost/">See how we calculate this →</a>
         </div>
       </div>
     </div>
@@ -119,10 +134,10 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
   <!-- ============ TRUST COUNTERS ============ -->
   <div class="dyn-trust">
     <div class="container dyn-trust-grid">
-      <div class="rv"><div class="dyn-trust-num"><span class="count" data-to="31">0</span></div><div class="dyn-trust-lbl">in-depth cost guides</div></div>
-      <div class="rv"><div class="dyn-trust-num"><span class="count" data-to="100">0</span><em>+</em></div><div class="dyn-trust-lbl">sourced prices with dates</div></div>
-      <div class="rv"><div class="dyn-trust-num"><span class="count" data-to="0">0</span></div><div class="dyn-trust-lbl">sponsored rankings</div></div>
-      <div class="rv"><div class="dyn-trust-num"><em>Oct</em> 2026</div><div class="dyn-trust-lbl">last price refresh</div></div>
+      <div class="rv"><div class="dyn-trust-num"><span class="count" data-to="31">31</span></div><div class="dyn-trust-lbl">in-depth cost guides</div></div>
+      <div class="rv"><div class="dyn-trust-num"><span class="count" data-to="100">100</span>+</div><div class="dyn-trust-lbl">sourced prices with dates</div></div>
+      <div class="rv"><div class="dyn-trust-num">None</div><div class="dyn-trust-lbl">paid rankings</div></div>
+      <div class="rv"><div class="dyn-trust-num">Oct 2026</div><div class="dyn-trust-lbl">sources accessed</div></div>
     </div>
   </div>
 
@@ -133,8 +148,8 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
       <h2>Charter prices, without the sales pitch</h2>
       <p class="dyn-sub">Indicative ranges from published 2026 broker guides. Every figure on this site carries a source and a date.</p></div>
       <div class="dyn-ptabs rv" role="tablist" aria-label="Price tables">
-        <button class="dyn-ptab active" data-ptab="py" role="tab" aria-selected="true">⛵ Yachts <span>/ week</span></button>
-        <button class="dyn-ptab" data-ptab="pj" role="tab" aria-selected="false">✈ Jets <span>/ hour</span></button>
+        <button class="dyn-ptab active" data-ptab="py" role="tab" aria-selected="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M12 3l7 10H5z"/><path d="M3 16h18l-2.5 4.5h-13z"/></svg> Yachts <span>/ week</span></button>
+        <button class="dyn-ptab" data-ptab="pj" role="tab" aria-selected="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5L21.5 3.5l-8 19-2.8-7.7z"/><path d="M10.7 13.8l4.5 4.5"/></svg> Jets <span>/ hour</span></button>
       </div>
       <div class="dyn-ptable-wrap rv">
         <table class="dyn-ptable active" id="py">
@@ -156,22 +171,22 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
           </tbody>
         </table>
       </div>
-      <p class="fine">Figures are indicative and move with season, route and availability. Sources &amp; access dates on every guide.</p>
+      <p class="fine">Figures are indicative and move with season, route and availability. Bareboat rates are shown in euros, crewed yachts in US dollars, as published — no conversion applied. Sources &amp; access dates on every guide.</p>
     </section>
 
     <!-- ============ START HERE ============ -->
     <section class="section" aria-label="Start here">
       <div class="rv"><p class="eyebrow">Start here</p>
       <h2>New to chartering?</h2>
-      <p class="dyn-sub">Three guides that answer 80% of first-timer questions.</p></div>
+      <p class="dyn-sub">Three guides to start with.</p></div>
       <div class="card-grid dyn-cards">
         <Card
           kicker="Yacht Charter"
           title="Yacht charter costs"
           description="Base fee, APA, tax and tips explained with worked examples."
           href="/yacht-charter/cost/"
-          image="https://images.unsplash.com/photo-1774990044517-cff3f41a6ad9?q=80&w=800&auto=format&fit=crop"
-          imageAlt="Boats docked in a calm marina on a clear day"
+          image="https://images.unsplash.com/photo-1777305232325-09f48919f077?q=80&w=800&auto=format&fit=crop"
+          imageAlt="Yachts docked in a sunny marina"
         />
         <Card
           kicker="Private Jets"
@@ -192,35 +207,25 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
       </div>
     </section>
 
-    <!-- ============ TRENDING ============ -->
-    <section class="section" aria-label="Trending guides">
-      <div class="rv"><p class="eyebrow">Trending this week</p>
-      <h2>What readers are comparing</h2>
-      <p class="dyn-sub">The guides getting the most attention right now.</p></div>
-      <div class="dyn-trend-wrap rv">
-        <div class="dyn-trend-row" id="trow">
-          {trending.map((t) => {
-            const g = t.guide!;
-            const gi = cardImg(g.data.hub, g.data.urlSlug);
-            return (
-              <a class="dyn-tcard" href={`/${g.data.hub}/${g.data.urlSlug}/`}>
-                <span class="dyn-tcard-art">
-                  <span class="dyn-badge">{t.badge}</span>
-                  {gi ? <img loading="lazy" decoding="async" src={gi.src} alt={gi.alt} /> : null}
-                </span>
-                <span class="dyn-tcard-tx">
-                  <span class="card-kicker">{hubLabel(g.data.hub)}</span>
-                  <span class="dyn-tcard-title">{g.data.title}</span>
-                  <span class="dyn-tcard-desc">{g.data.description}</span>
-                </span>
-              </a>
-            );
-          })}
-        </div>
-        <div class="dyn-tnav">
-          <button id="tprev" aria-label="Scroll trending left">←</button>
-          <button id="tnext" aria-label="Scroll trending right">→</button>
-        </div>
+    <!-- ============ MORE GUIDES ============ -->
+    <section class="section" aria-label="More guides">
+      <div class="rv"><p class="eyebrow">Keep exploring</p>
+      <h2>More guides</h2>
+      <p class="dyn-sub">Deeper dives into the costs behind specific trips and decisions.</p></div>
+      <div class="card-grid dyn-cards">
+        {moreGuides.map((g) => {
+          const gi = cardImg(g!.data.hub, g!.data.urlSlug);
+          return (
+            <Card
+              kicker={hubLabel(g!.data.hub)}
+              title={g!.data.title}
+              description={g!.data.description}
+              href={`/${g!.data.hub}/${g!.data.urlSlug}/`}
+              image={gi?.src}
+              imageAlt={gi?.alt}
+            />
+          );
+        })}
       </div>
     </section>
   </div>
@@ -232,31 +237,35 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
       <h2 style="color: var(--ivory);">Independent numbers, or nothing</h2>
       <p class="dyn-sub" style="color: #aeb9c6;">Every price on this site is traceable to a published source with an access date. If we can't source it, we leave the cell blank.</p></div>
       <div class="dyn-steps">
-        <div class="dyn-step rv"><div class="n">01</div><h3>Collect</h3><p>We pull 2026 figures from broker guides, fleet rate reports and operator price lists — never from thin air.</p></div>
+        <div class="dyn-step rv"><div class="n">01</div><h3>Collect</h3><p>We pull 2026 figures from broker guides, fleet reports and operator price lists — never from thin air.</p></div>
         <div class="dyn-step rv"><div class="n">02</div><h3>Date everything</h3><p>Each figure carries its source and access date, so you can judge freshness before you trust it.</p></div>
         <div class="dyn-step rv"><div class="n">03</div><h3>No sponsored ranks</h3><p>Our guides never rank providers for pay. Affiliate links are disclosed and never affect the numbers.</p></div>
+        <div class="dyn-step rv"><div class="n">04</div><h3>How we earn money</h3><p>Free to read. If you request a quote through some links, the provider may pay us a commission. It never changes your price. <a href="/affiliate-disclosure/">Read the disclosure</a></p></div>
       </div>
     </div>
   </section>
 
   <div class="container">
-    <!-- ============ FAQ TEASER ============ -->
+    <!-- ============ FAQ ============ -->
     <section class="section" aria-label="Frequently asked questions">
-      <div class="rv"><p class="eyebrow">Quick answers</p>
-      <h2>Asked all the time</h2>
-      <p class="dyn-sub">Straight answers, no sales call required.</p></div>
-      <div class="dyn-faq rv">
-        <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">What's the cheapest way to charter a yacht?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>A bareboat sailing yacht in shoulder season — roughly €3,500–€9,000 per week before fuel — is the floor. You sail it yourself and need the right licence.</div></div></div>
-        <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">Are empty leg flights really 75% cheaper?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Discounts of 25–75% are commonly cited, because the operator would otherwise fly empty. The trade-off: fixed route, date and time, and the flight can change.</div></div></div>
-        <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">What does APA mean on a yacht quote?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Advance Provisioning Allowance — typically 25–35% of the base fee, held upfront to cover fuel, food, dockage and drinks. Unused funds are refunded.</div></div></div>
-        <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">Is a private jet ever cheaper than first class?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Per seat, rarely — but for groups of 6+ on the right route, the per-person maths can get surprisingly close. <a href="/private-jets/charter-vs-first-class/">Our comparison guide</a> runs the numbers.</div></div></div>
+      <div class="faq-grid rv">
+        <div class="faq-head">
+          <p class="eyebrow">Quick answers</p>
+          <h2>Asked all the time</h2>
+          <p class="dyn-sub">Straight answers, no sales call required.</p>
+          <a class="faq-card" href="/planning/luxury-group-trip-checklist/">Comparing quotes? Use our group trip checklist →</a>
+        </div>
+        <div class="dyn-faq">
+          <div class="dyn-faq-item open"><button class="dyn-faq-q" aria-expanded="true">What's the cheapest way to charter a yacht?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>A bareboat sailing yacht in shoulder season — roughly €3,500–€9,000 per week before fuel — is the floor. You sail it yourself and need the right licence.</div></div></div>
+          <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">How much cheaper are empty leg flights?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Discounts of 25–75% are commonly cited, and published examples show about 45–55%. The trade-off: fixed route, date and time, and the flight can change. <a href="/private-jets/empty-leg-flights/">How empty legs work</a></div></div></div>
+          <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">What does APA mean on a yacht quote?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Advance Provisioning Allowance — typically 25–40% of the base fee, held upfront to cover fuel, food, dockage and drinks. Unused funds are refunded.</div></div></div>
+          <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">Are taxes included in a yacht quote?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Usually not. Charter tax of 13–22% can apply on top of the base fee in many cruising areas, so ask before you compare quotes. <a href="/yacht-charter/cost/">Yacht charter costs</a></div></div></div>
+          <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">What is a positioning flight?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>When the aircraft has to fly empty to reach your departure airport, and that cost is often added to your quote. Always ask whether positioning is included.</div></div></div>
+          <div class="dyn-faq-item"><button class="dyn-faq-q" aria-expanded="false">Is a private jet ever cheaper than first class?<span class="ch" aria-hidden="true">+</span></button><div class="dyn-faq-a"><div>Per seat, rarely — but for groups of 6+ on the right route, the per-person maths can get surprisingly close. <a href="/private-jets/charter-vs-first-class/">Our comparison guide</a> runs the numbers.</div></div></div>
+        </div>
       </div>
     </section>
 
-    <section class="section narrow" aria-label="How we earn money">
-      <h2>How we earn money</h2>
-      <p>This site is free to read. When you request a quote or book through some links, the provider may pay us a commission. It does not change the price you pay, and we do not accept payment to change what our guides say.</p>
-    </section>
     <Newsletter />
   </div>
 
@@ -326,11 +335,8 @@ const cardImg = (hub: string, slug: string) => guideImages[`${hub}/${slug}`];
       if(!open){ item.classList.add('open'); ans.style.maxHeight=ans.scrollHeight+'px'; q.setAttribute('aria-expanded','true'); }
     });
   });
-  // ---------- carousel ----------
-  var row=document.getElementById('trow');
-  var prev=document.getElementById('tprev'), next=document.getElementById('tnext');
-  if(prev&&row) prev.addEventListener('click',function(){ row.scrollBy({left:-360,behavior:'smooth'}); });
-  if(next&&row) next.addEventListener('click',function(){ row.scrollBy({left:360,behavior:'smooth'}); });
+  // first FAQ answer open by default
+  (function(){ var first=document.querySelector('.dyn-faq-item.open'); if(first){ var ans=first.querySelector('.dyn-faq-a'); if(ans) ans.style.maxHeight=ans.scrollHeight+'px'; } })();
   // ---------- reduced motion ----------
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });

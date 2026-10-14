@@ -31,6 +31,6 @@ const { kicker, title, description, href, image, imageAlt } = Astro.props;
     <span class="card-kicker">{kicker}</span>
     <h3 class="card-title"><a href={href}>{title}</a></h3>
     <p class="card-desc">{description}</p>
-    <a class="card-link" href={href}>Read the guide <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="card-link" href={href} aria-label={`Read the guide: ${title}`}>Read the guide <span class="arrow" aria-hidden="true">→</span></a>
   </div>
 </article>
