@@ -10,7 +10,7 @@ export const CONTACT_EMAIL = '';
 export const EDITOR_NAME = '';
 export const NEWSLETTER_ACTION_URL = '';
 export const CF_BEACON_TOKEN = '';
-export const GSC_VERIFICATION = '';
+export const GSC_VERIFICATION = 'URb-Z-oa40DE9YrO0hkgAenVVRxukxLL_0O1CFuHge4';
 export const GA4_MEASUREMENT_ID = '';
 
 export const YEAR = new Date().getFullYear();
