@@ -11,6 +11,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/gen-redirects.mjs && astro build",
+    "prebuild": "npm test",
+    "test": "node --test \"tests/**/*.test.mjs\"",
     "dev": "astro dev",
     "preview": "astro preview"
   },
