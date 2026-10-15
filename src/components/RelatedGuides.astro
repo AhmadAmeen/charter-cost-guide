@@ -1,0 +1,17 @@
+---
+interface Guide {
+  href: string;
+  title: string;
+  desc: string;
+}
+interface Props {
+  guides: Guide[];
+}
+const { guides } = Astro.props;
+---
+<div class="related-guides">
+  <h2>Related guides</h2>
+  {guides.map((g) => (
+    <p><a href={g.href}>{g.title}</a> — {g.desc}</p>
+  ))}
+</div>

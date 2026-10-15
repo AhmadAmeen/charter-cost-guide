@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import Sources from '../../components/Sources.astro';
+import DoNext from '../../components/DoNext.astro';
+import RelatedGuides from '../../components/RelatedGuides.astro';
 import { SITE_URL, EDITOR_DISPLAY_NAME } from '../../config';
 import data from '../../data/charter-data.json';
 import { yachtEstimate, renderYachtResults } from '../../lib/yacht-calc.js';
@@ -119,7 +121,7 @@ const tipRegionOptions = data.tipRanges
       <p class="short-answer">
         Pick your yacht type and trip length to estimate the full charter cost — base fee plus APA, crew tip and local tax — as a range, not a single number. The arithmetic is shown line by line, with per-guest costs, a two-quote comparison and a quote sanity check.
       </p>
-      <p class="trust-line"><strong>Estimate only, not a quote.</strong> Real prices depend on season, route, operator and availability.</p>
+      <p class="trust-line"><span class="fwb">Estimate only, not a quote.</span> Real prices depend on season, route, operator and availability.</p>
     </article>
 
     <section class="tool" aria-label="Yacht charter cost calculator">
@@ -244,7 +246,7 @@ const tipRegionOptions = data.tipRanges
             </div>
           </div>
           <p id="y-tipout" class="module-out" aria-live="polite"></p>
-          <p class="field-note">Tip is discretionary and calculated on the base fee only — never on APA or tax. Hand it to the captain at the end of the charter. <a href="/yacht-charter/crew-tipping-guide/">Tipping guide with sources</a>.</p>
+          <p class="field-note">Tip is discretionary and calculated on the base fee only — never on APA or tax. Hand it to the captain at the end of the charter.</p>
         </section>
 
         <section class="module" aria-label="Compare two quotes">
@@ -279,37 +281,33 @@ const tipRegionOptions = data.tipRanges
         The maths is deliberately simple, because charter pricing is simple once the layers are visible. The base fee is the weekly (or daily) price of the yacht itself. On a crewed charter, three layers sit on top of it: the APA (Advance Provisioning Allowance, usually 25–40% of the base fee) covers running costs like fuel, food and dockage; the crew tip (around 10% is the most commonly suggested figure, and it is discretionary) rewards the crew; and local tax or VAT (published samples cite 22% in Italy, 20% in France and 13% in Croatia) is added on top. The tool multiplies each layer by the base total and adds them up, then divides by your guest count for the per-person figure.
       </p>
       <p>
-        Two assumptions matter. First, APA, tip and tax are all calculated on the <em>base fee only</em> — that is how the sources describe them, and it is why the all-in multiplier lands around 1.4 to 1.7 times the base rather than compounding on itself. Second, the day input shows a pro-rata floor: the base fee times days divided by seven. Short charters are often priced higher per day, or carry minimums, so treat that figure as the lowest plausible number and ask the broker for the real one.
+        Two assumptions matter. First, APA, tip and tax are all calculated on the <span class="itl">base fee only</span> — that is how the sources describe them, and it is why the all-in multiplier lands around 1.4 to 1.7 times the base rather than compounding on itself. Second, the day input shows a pro-rata floor: the base fee times days divided by seven. Short charters are often priced higher per day, or carry minimums, so treat that figure as the lowest plausible number and ask the broker for the real one.
       </p>
       <h2>Three worked examples</h2>
       <p>
-        <strong>Crewed catamaran, one week, eight guests.</strong> A $50,000 base fee with 30% APA ($15,000), a 10% tip ($5,000) and Croatia's 13% charter tax ($6,500) totals <strong>$76,500</strong> — a 1.53 multiplier, or about $9,562.50 per guest. This is the trip shape where first-timers get caught out: the headline price and the final bill differ by more than half.
+        <span class="fwb">Crewed catamaran, one week, eight guests.</span> A $50,000 base fee with 30% APA ($15,000), a 10% tip ($5,000) and Croatia's 13% charter tax ($6,500) totals <span class="fwb">$76,500</span> — a 1.53 multiplier, or about $9,562.50 per guest. This is the trip shape where first-timers get caught out: the headline price and the final bill differ by more than half.
       </p>
       <p>
-        <strong>Bareboat, one week, doing it yourself.</strong> A €5,000 base fee plus a skipper for 7 days at €180–€250 a day comes to <strong>€6,260–€6,750</strong> before fuel and marina fees, which you pay directly. Add roughly €150–€400 for marinas and €100–€250 for fuel on a typical 38–40 ft week (operator examples), and the honest all-in sits near €7,000 — before the refundable damage deposit, which is held, not spent.
+        <span class="fwb">Bareboat, one week, doing it yourself.</span> A €5,000 base fee plus a skipper for 7 days at €180–€250 a day comes to <span class="fwb">€6,260–€6,750</span> before fuel and marina fees, which you pay directly. Add roughly €150–€400 for marinas and €100–€250 for fuel on a typical 38–40 ft week (operator examples), and the honest all-in sits near €7,000 — before the refundable damage deposit, which is held, not spent.
       </p>
       <p>
-        <strong>Three days on a $30,000-a-week yacht.</strong> The pro-rata floor is $30,000 × 3 ÷ 7 = <strong>$12,857</strong> for the base fee alone, before APA, tip and tax. In practice, few operators pro-rate neatly — expect a higher per-day figure or a weekly minimum, which is exactly what to ask about first.
+        <span class="fwb">Three days on a $30,000-a-week yacht.</span> The pro-rata floor is $30,000 × 3 ÷ 7 = <span class="fwb">$12,857</span> for the base fee alone, before APA, tip and tax. In practice, few operators pro-rate neatly — expect a higher per-day figure or a weekly minimum, which is exactly what to ask about first.
       </p>
       <h2>What the estimate leaves out</h2>
       <p>
         Season moves everything: July and August cost the most, May and September usually less. The yacht's age and condition move the base fee inside (or outside) the preset ranges. Delivery or repositioning fees for one-way itineraries, premium drinks, special catering and communications packages sit outside the formula — put them in the "other fees" box when comparing quotes. There is no currency conversion: pick the currency your quote is in. And the tool knows nothing about availability — a perfect estimate means nothing if the yacht is booked.
       </p>
 
-      <section class="do-next" aria-label="Do this next">
-        <h2>Do this next</h2>
-        <p>Take your estimate and run it past the one-page <a href="/checklist/">charter quote checklist</a> — it lists everything to confirm with a broker before you pay anything. For the full cost breakdown behind these numbers, read the <a href="/yacht-charter/cost/">yacht charter cost guide</a>.</p>
-      </section>
+      <RelatedGuides guides={[
+        { href: '/yacht-charter/cost/', title: 'How much does it cost to charter a yacht?', desc: 'the full cost guide this calculator is built from' },
+        { href: '/yacht-charter/apa-explained/', title: 'APA explained', desc: 'what the Advance Provisioning Allowance covers and how it is settled' },
+        { href: '/yacht-charter/crewed-vs-bareboat/', title: 'Crewed vs bareboat', desc: 'which charter type fits your group and budget' },
+        { href: '/yacht-charter/crew-tipping-guide/', title: 'Yacht crew tipping guide', desc: 'how much to tip, when, and how it is shared' },
+      ]} />
 
-      <h2>Related guides</h2>
-      <ul>
-        <li><a href="/yacht-charter/cost/">How much does it cost to charter a yacht?</a> — the full cost guide this calculator is built from</li>
-        <li><a href="/yacht-charter/apa-explained/">APA explained</a> — what the Advance Provisioning Allowance covers and how it is settled</li>
-        <li><a href="/yacht-charter/crewed-vs-bareboat/">Crewed vs bareboat</a> — which charter type fits your group and budget</li>
-        <li><a href="/yacht-charter/crew-tipping-guide/">Yacht crew tipping guide</a> — how much to tip, when, and how it is shared</li>
-      </ul>
+      <p class="dates-line"><span class="fwb">Last verified:</span> 15 October 2026 · <span class="fwb">Next review:</span> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
 
-      <p class="dates-line"><strong>Last verified:</strong> 15 October 2026 · <strong>Next review:</strong> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
+      <DoNext checklistHref="/checklist/" guideHref="/yacht-charter/cost/" guideName="yacht charter cost guide" />
     </div>
 
     <Faq items={faqItems} />
@@ -348,6 +346,8 @@ const tipRegionOptions = data.tipRanges
   .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
   .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
   .do-next h2 { margin-top: 0; }
+  .fwb { font-weight: 700; }
+  .itl { font-style: italic; }
   .dates-line { font-size: 0.9rem; color: #555; }
   @media print {
     header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }

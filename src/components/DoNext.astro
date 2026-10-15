@@ -1,0 +1,13 @@
+---
+interface Props {
+  checklistHref: string;
+  guideHref: string;
+  guideName: string;
+}
+const { checklistHref, guideHref, guideName } = Astro.props;
+---
+<div class="do-next">
+  <h2>Do this next</h2>
+  <p>Take your estimate and run it past the one-page <a href={checklistHref}>charter quote checklist</a> — it lists everything to confirm with a broker before you pay anything.</p>
+  <p>For the full cost breakdown behind these numbers, read the <a href={guideHref}>{guideName}</a> for the full methodology.</p>
+</div>

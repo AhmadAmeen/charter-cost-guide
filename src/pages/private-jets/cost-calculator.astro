@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import Sources from '../../components/Sources.astro';
+import DoNext from '../../components/DoNext.astro';
+import RelatedGuides from '../../components/RelatedGuides.astro';
 import { SITE_URL, EDITOR_DISPLAY_NAME } from '../../config';
 import data from '../../data/charter-data.json';
 import { jetEstimate, renderJetResults } from '../../lib/jet-calc.js';
@@ -96,7 +98,7 @@ const catOptions = data.jetCategories.map(
       <p class="short-answer">
         Enter the jet size and flight hours to estimate the charter cost as a range, with per-passenger maths and a first-class break-even line. No signup, nothing stored — the arithmetic is shown line by line.
       </p>
-      <p class="trust-line"><strong>Estimate only, not a quote.</strong> Real prices depend on season, route, operator and availability.</p>
+      <p class="trust-line"><span class="fwb">Estimate only, not a quote.</span> Real prices depend on season, route, operator and availability.</p>
     </article>
 
     <section class="tool" aria-label="Private jet charter cost estimator">
@@ -105,7 +107,7 @@ const catOptions = data.jetCategories.map(
           <legend>Your flight</legend>
           <label for="j-cat">Jet category</label>
           <select id="j-cat" set:html={catOptions.join('')} />
-          <p class="field-note">* Published hourly ranges differ by source — the presets reflect the ranges used across our guides. <a href="/private-jets/cost/">How we sourced them</a>.</p>
+          <p class="field-note">* Published hourly ranges differ by source — the presets reflect the ranges used across our guides; see the full cost guide linked below.</p>
           <div class="input-row">
             <div>
               <label for="j-hours">Flight hours</label>
@@ -186,36 +188,32 @@ const catOptions = data.jetCategories.map(
         The core formula is hourly rate times flight hours, shown as a range because published hourly rates are ranges: a light jet at $3,500–$6,500 an hour flown for two hours gives $7,000–$13,000. Positioning and waiting hours are added at the same rate and labelled "if billed", because billing practice varies by provider — some absorb the positioning flight, some charge it in full. The per-passenger figure is simply the total divided by your group size, which is why flying with six instead of two transforms the maths.
       </p>
       <p>
-        Two things the estimator refuses to invent. Taxes and fees are only added if <em>you</em> type a percentage; otherwise the figure is shown before fees with a prompt to ask for an all-in quote. And the first-class fare in the break-even module has no default at all — the break-even group size is your jet cost divided by the fare you actually see when you search.
+        Two things the estimator refuses to invent. Taxes and fees are only added if <span class="itl">you</span> type a percentage; otherwise the figure is shown before fees with a prompt to ask for an all-in quote. And the first-class fare in the break-even module has no default at all — the break-even group size is your jet cost divided by the fare you actually see when you search.
       </p>
       <h2>Three worked examples</h2>
       <p>
-        <strong>Light jet, two hours, four passengers.</strong> $3,500–$6,500 × 2 hours = <strong>$7,000–$13,000</strong> before fees, or about $1,750–$3,250 each. Add a 10% taxes-and-fees figure of your own and it becomes $7,700–$14,300.
+        <span class="fwb">Light jet, two hours, four passengers.</span> $3,500–$6,500 × 2 hours = <span class="fwb">$7,000–$13,000</span> before fees, or about $1,750–$3,250 each. Add a 10% taxes-and-fees figure of your own and it becomes $7,700–$14,300.
       </p>
       <p>
-        <strong>Midsize jet, four hours, six passengers.</strong> $4,500–$8,500 × 4 = <strong>$18,000–$34,000</strong>, or $3,000–$5,666.67 per person. This is the shape of trip where chartering starts to look rational against premium cabins.
+        <span class="fwb">Midsize jet, four hours, six passengers.</span> $4,500–$8,500 × 4 = <span class="fwb">$18,000–$34,000</span>, or $3,000–$5,666.67 per person. This is the shape of trip where chartering starts to look rational against premium cabins.
       </p>
       <p>
-        <strong>Break-even against first class.</strong> Take the light-jet two-hour range ($7,000–$13,000) and a $3,000 first-class fare you typed in: $7,000 ÷ $3,000 = 2.3 people, $13,000 ÷ $3,000 = 4.3 people. With three or four passengers splitting, the jet can cost less per person than first class — before you count the time saved.
+        <span class="fwb">Break-even against first class.</span> Take the light-jet two-hour range ($7,000–$13,000) and a $3,000 first-class fare you typed in: $7,000 ÷ $3,000 = 2.3 people, $13,000 ÷ $3,000 = 4.3 people. With three or four passengers splitting, the jet can cost less per person than first class — before you count the time saved.
       </p>
       <h2>What the estimate leaves out</h2>
       <p>
         Many operators apply minimum daily flight hours, so a 45-minute hop may be billed as two hours — ask. Waiting time on the ground, catering beyond the basics, de-icing in winter, and peak-day surcharges all sit outside the formula. Empty-leg pricing is a wide band, not a promise: the 25–75% discount reflects commonly cited ranges, and the operator can move or cancel the flight. Fuel surcharges appear and disappear with oil prices. As with yachts, the tool knows nothing about availability.
       </p>
 
-      <section class="do-next" aria-label="Do this next">
-        <h2>Do this next</h2>
-        <p>Take your estimate and run it past the one-page <a href="/checklist/">charter quote checklist</a> — it lists everything to confirm with a broker before you pay anything. For the full cost breakdown behind these numbers, read the <a href="/private-jets/cost/">private jet charter cost guide</a>.</p>
-      </section>
+      <DoNext checklistHref="/checklist/" guideHref="/private-jets/cost/" guideName="private jet charter cost guide" />
 
-      <h2>Related guides</h2>
-      <ul>
-        <li><a href="/private-jets/cost/">How much does it cost to charter a private jet?</a> — the full cost guide this estimator is built from</li>
-        <li><a href="/private-jets/charter-vs-first-class/">Charter vs first class</a> — the full per-person comparison</li>
-        <li><a href="/private-jets/group-travel-vs-commercial/">Group travel vs commercial</a> — when splitting a jet beats the airlines</li>
-      </ul>
+      <RelatedGuides guides={[
+        { href: '/private-jets/cost/', title: 'How much does it cost to charter a private jet?', desc: 'the full cost guide this estimator is built from' },
+        { href: '/private-jets/charter-vs-first-class/', title: 'Charter vs first class', desc: 'the full per-person comparison' },
+        { href: '/private-jets/group-travel-vs-commercial/', title: 'Group travel vs commercial', desc: 'when splitting a jet beats the airlines' },
+      ]} />
 
-      <p class="dates-line"><strong>Last verified:</strong> 15 October 2026 · <strong>Next review:</strong> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
+      <p class="dates-line"><span class="fwb">Last verified:</span> 15 October 2026 · <span class="fwb">Next review:</span> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
     </div>
 
     <Faq items={faqItems} />
@@ -256,6 +254,8 @@ const catOptions = data.jetCategories.map(
   .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
   .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
   .do-next h2 { margin-top: 0; }
+  .fwb { font-weight: 700; }
+  .itl { font-style: italic; }
   .dates-line { font-size: 0.9rem; color: #555; }
   @media print {
     header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }
