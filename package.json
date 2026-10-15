@@ -12,7 +12,7 @@
   "scripts": {
     "build": "node scripts/gen-redirects.mjs && astro build",
     "prebuild": "npm test",
-    "test": "node --test \"tests/**/*.test.mjs\"",
+    "test": "node --test tests/yacht-calculator.test.mjs tests/jet-calculator.test.mjs",
     "dev": "astro dev",
     "preview": "astro preview"
   },
