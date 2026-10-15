@@ -24,7 +24,7 @@ const faqItems = [
   {
     question: 'How much is a 2-hour private jet flight?',
     answer:
-      'On a light jet at $3,500–$6,500 per hour, two hours comes to roughly $7,000–$13,000 before taxes and fees — about $1,750–$3,250 per person with four passengers. Positioning time, waiting time and fees move the real quote.',
+      'On a light jet at $2,000–$7,000 per hour, two hours comes to roughly $4,000–$14,000 before taxes and fees — about $1,000–$3,500 per person with four passengers. Positioning time, waiting time and fees move the real quote.',
   },
   {
     question: 'Is the price per seat or per aircraft?',
@@ -39,7 +39,7 @@ const faqItems = [
   {
     question: 'Do taxes and fees apply on top?',
     answer:
-      'Usually, yes — and they vary by country, route and operator. This estimator never invents a fee percentage: it shows the before-fees figure and only adds taxes and fees if you type a percentage yourself. Always ask for an all-in quote.',
+      'Usually, yes — and they vary by country, route and operator. This estimator never invents a fee percentage: it shows the before-fees figure and only adds taxes and fees if you type a percentage yourself. Always ask for an all-in quote. As one concrete example, US domestic flights carry a 7.5% federal excise tax plus a $5.30 per-passenger segment fee in 2026 (per FAA and NATA) — on a $10,000 charter with four passengers that is $750 plus $21.20, so about $10,771 before any operator fees.',
   },
   {
     question: 'How do empty legs change the price?',
@@ -51,6 +51,9 @@ const faqItems = [
 const sources = [
   { name: 'Charter Cost Guide — Private jet charter cost guide (hourly ranges and sources)', url: `${SITE_URL}/private-jets/cost/`, accessed: '15 October 2026' },
   { name: 'Charter Cost Guide — Charter vs first class', url: `${SITE_URL}/private-jets/charter-vs-first-class/`, accessed: '15 October 2026' },
+  { name: 'Simple Flying — private jet hourly costs (2026)', url: 'https://simpleflying.com/how-much-private-jet-flight-actually-cost-per-hour-2026/', accessed: '15 October 2026' },
+  { name: 'evoJets — charter flight charges (US broker)', url: 'https://www.evojets.com/private-jet-charter-flights-to-fort-myers-fl/', accessed: '15 October 2026' },
+  { name: 'Charter-A — complete guide to private jet charter costs 2026 (EU broker)', url: 'https://charter-a.com/complete-guide-to-private-jet-charter-costs-in-2026-europe-the-uk/', accessed: '15 October 2026' },
 ];
 
 const articleLd = {
@@ -185,14 +188,14 @@ const catOptions = data.jetCategories.map(
     <div class="prose">
       <h2>How we calculate this</h2>
       <p>
-        The core formula is hourly rate times flight hours, shown as a range because published hourly rates are ranges: a light jet at $3,500–$6,500 an hour flown for two hours gives $7,000–$13,000. Positioning and waiting hours are added at the same rate and labelled "if billed", because billing practice varies by provider — some absorb the positioning flight, some charge it in full. The per-passenger figure is simply the total divided by your group size, which is why flying with six instead of two transforms the maths.
+        The core formula is hourly rate times flight hours, shown as a range because published hourly rates are ranges: a light jet at $2,000–$7,000 an hour flown for two hours gives $4,000–$14,000. Positioning and waiting hours are added at the same rate and labelled "if billed", because billing practice varies by provider — some absorb the positioning flight, some charge it in full. The per-passenger figure is simply the total divided by your group size, which is why flying with six instead of two transforms the maths.
       </p>
       <p>
         Two things the estimator refuses to invent. Taxes and fees are only added if <span class="itl">you</span> type a percentage; otherwise the figure is shown before fees with a prompt to ask for an all-in quote. And the first-class fare in the break-even module has no default at all — the break-even group size is your jet cost divided by the fare you actually see when you search.
       </p>
       <h2>Three worked examples</h2>
       <p>
-        <span class="fwb">Light jet, two hours, four passengers.</span> $3,500–$6,500 × 2 hours = <span class="fwb">$7,000–$13,000</span> before fees, or about $1,750–$3,250 each. Add a 10% taxes-and-fees figure of your own and it becomes $7,700–$14,300.
+        <span class="fwb">Light jet, two hours, four passengers.</span> $2,000–$7,000 × 2 hours = <span class="fwb">$4,000–$14,000</span> before fees, or about $1,000–$3,500 each. Add a 10% taxes-and-fees figure of your own and it becomes $4,400–$15,400.
       </p>
       <p>
         <span class="fwb">Midsize jet, four hours, six passengers.</span> $4,500–$8,500 × 4 = <span class="fwb">$18,000–$34,000</span>, or $3,000–$5,666.67 per person. This is the shape of trip where chartering starts to look rational against premium cabins.

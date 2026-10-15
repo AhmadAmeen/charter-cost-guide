@@ -5,6 +5,7 @@ import Faq from '../../components/Faq.astro';
 import Sources from '../../components/Sources.astro';
 import DoNext from '../../components/DoNext.astro';
 import RelatedGuides from '../../components/RelatedGuides.astro';
+import SeasonRegion from '../../components/SeasonRegion.astro';
 import { SITE_URL, EDITOR_DISPLAY_NAME } from '../../config';
 import data from '../../data/charter-data.json';
 import { yachtEstimate, renderYachtResults } from '../../lib/yacht-calc.js';
@@ -43,7 +44,7 @@ const faqItems = [
   {
     question: 'Which tax rate should I pick?',
     answer:
-      'Published samples cite about 22% VAT in Italy, 20% in France and 13% charter tax in Croatia, calculated on the base fee. Pick the country you will cruise in, or choose "No tax / not sure" to see the before-tax figure and ask your broker how tax applies to your itinerary.',
+      'Published samples cite about 22% VAT in Italy, 20% in France (applies to time in EU waters; itineraries with international-water time are VAT-apportioned) and 13% charter tax on charters starting in Croatia, calculated on the base fee. Pick the country you will cruise in, or choose "No tax / not sure" to see the before-tax figure and ask your broker how tax applies to your itinerary.',
   },
   {
     question: 'Is this calculator a quote?',
@@ -68,6 +69,8 @@ const sources = [
   { name: 'LuxuryCharterGroup — Charter Costs', url: 'https://www.luxurychartergroup.com/post.php/charter-costs-715/', accessed: '13 October 2026' },
   { name: 'Charter Cost Guide — Crew tipping guide (tip ranges and sources)', url: `${SITE_URL}/yacht-charter/crew-tipping-guide/`, accessed: '15 October 2026' },
   { name: 'Charter Cost Guide — APA explained', url: `${SITE_URL}/yacht-charter/apa-explained/`, accessed: '15 October 2026' },
+  { name: 'YachtBooker — bareboat charter high/low season price difference (~40%, Med)', url: 'https://www.yachtbooker.com/bareboat-charter?page=80', accessed: '15 October 2026' },
+  { name: 'Yachtsys — Trends in Prices and Discounts for Bareboat Charter Yachts (high/low reach 40%; 2015 data)', url: 'https://www.yachtsys.com/Average-Charter-Prices-and-Discounts-for-Bareboat.html', accessed: '15 October 2026' },
 ];
 
 const articleLd = {
@@ -157,7 +160,9 @@ const tipRegionOptions = data.tipRanges
               <label for="y-guests">Guests</label>
               <input id="y-guests" type="number" min="1" max="40" step="1" value="8" inputmode="numeric" />
             </div>
+            <SeasonRegion />
           </div>
+          <p class="field-note">Season adjusts the base fee (indicative: high ~30% above low, shoulder ~15% above — see sources below). Region sets the tip guidance below; pick your tax country separately.</p>
           <p class="field-note" id="y-bareboat-note" hidden>Bareboat mode: APA, tip and tax are replaced by your own running-cost figures below.</p>
         </fieldset>
 
@@ -392,14 +397,20 @@ const tipRegionOptions = data.tipRanges
     const type = $('y-type').value;
     const custom = type === 'custom';
     const p = custom ? null : byId(type);
-    const baseLow = custom ? Math.max(0, Number($('y-custom').value) || 0) : p.low;
-    const baseHigh = custom ? baseLow : p.high;
+    const rawLow = custom ? Math.max(0, Number($('y-custom').value) || 0) : p.low;
+    const rawHigh = custom ? rawLow : p.high;
+    const seasonId = $('y-season').value;
+    const seasonMult = seasonId === 'high' ? 1.3 : seasonId === 'shoulder' ? 1.15 : 1.0;
+    const baseLow = rawLow * seasonMult;
+    const baseHigh = rawHigh * seasonMult;
+    const region = $('y-region').value;
     let unit = $('y-unit').value;
     let dur = Math.round(Number($('y-dur').value) || 1);
     if (unit === 'days') { dur = Math.min(7, Math.max(2, dur)); }
     else { dur = Math.min(4, Math.max(1, dur)); unit = 'weeks'; }
     return {
       type, custom, symbol: currentSymbol(), baseLow, baseHigh, unit, dur,
+      seasonMult, region,
       apa: Math.min(100, Math.max(0, Number($('y-apa').value) || 0)),
       tip: Math.min(100, Math.max(0, Number($('y-tip').value) || 0)),
       tax: taxPct(),
@@ -481,6 +492,7 @@ const tipRegionOptions = data.tipRanges
     const q = new URLSearchParams({
       type: s.type, unit: s.unit, dur: s.dur, apa: s.apa, tip: s.tip,
       taxpreset: $('y-taxpreset').value, taxcustom: $('y-taxcustom').value, guests: s.guests,
+      season: s.seasonMult, region: s.region,
     });
     if (s.custom) { q.set('base', s.baseLow); q.set('cur', s.symbol); }
     if (bb) {
@@ -500,6 +512,8 @@ const tipRegionOptions = data.tipRanges
     set('y-guests', q.get('guests')); set('y-custom', q.get('base')); set('y-cur', q.get('cur'));
     set('y-fuel', q.get('fuel')); set('y-marina', q.get('marina')); set('y-cleaning', q.get('cleaning'));
     set('y-skipdays', q.get('skipdays'));
+    set('y-season', q.get('season')); set('y-region', q.get('region'));
+    if (q.get('region')) $('y-tipregion').value = q.get('region');
   }
 
   function summaryText() {
@@ -527,6 +541,12 @@ const tipRegionOptions = data.tipRanges
     const p = byId($('y-type').value);
     if (p && p.apaDefault != null) $('y-apa').value = p.apaDefault;
     if (p && p.tipDefault != null) $('y-tip').value = p.tipDefault;
+    render();
+  });
+
+  // Region change → sync tip module region.
+  $('y-region').addEventListener('change', () => {
+    $('y-tipregion').value = $('y-region').value;
     render();
   });
 

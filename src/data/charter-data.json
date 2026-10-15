@@ -1,1 +1,367 @@
-{"asOf":"2026-10-15","bareboat":{"skipperCollected":"2026-10-13","skipperCurrency":"EUR","skipperHigh":250,"skipperLow":180,"skipperSource":"Charter Cost Guide data bank (operator examples; single source — treat as indicative)","skipperSourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/crewed-vs-bareboat/","skipperUnit":"day"},"jetCategories":[{"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":6500,"id":"light","low":3500,"name":"Light jet (about 6 seats)","note":"Sources disagree: some published ranges start near $3,000/hr","source":"Charter Cost Guide data bank (homepage estimator canonical rates; broker published ranges differ — sources disagree)","sourceUrl":"https://charter-cost-guide.pages.dev/private-jets/cost/","unit":"hour"},{"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":8500,"id":"midsize","low":4500,"name":"Midsize jet (about 8 seats)","note":null,"source":"Charter Cost Guide data bank (homepage estimator canonical rates; broker published ranges differ — sources disagree)","sourceUrl":"https://charter-cost-guide.pages.dev/private-jets/cost/","unit":"hour"},{"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":12000,"id":"super-midsize","low":7500,"name":"Super-midsize jet","note":"Sources disagree: band edges vary by source","source":"Charter Cost Guide data bank (broker published ranges; sources disagree on band edges)","sourceUrl":"https://charter-cost-guide.pages.dev/private-jets/cost/","unit":"hour"},{"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":13000,"id":"heavy","low":7000,"name":"Large / heavy jet (12+ seats)","note":"Some sources quote higher for ultra-long-range aircraft","source":"Charter Cost Guide data bank (homepage estimator canonical rates; broker published ranges differ — sources disagree)","sourceUrl":"https://charter-cost-guide.pages.dev/private-jets/cost/","unit":"hour"},{"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":15000,"id":"ultra-long-range","low":10000,"name":"Ultra-long-range jet","note":"Top of the range and beyond for the largest aircraft","source":"Charter Cost Guide data bank (broker published ranges; sources disagree on band edges)","sourceUrl":"https://charter-cost-guide.pages.dev/private-jets/cost/","unit":"hour"}],"note":"Indicative ranges compiled from the sources listed with each preset. Reviewed quarterly. These are planning ranges, not quotes.","taxPresets":[{"collected":"2026-10-13","id":"croatia","name":"Croatia","rate":13,"source":"Charter Cost Guide — A01/A06/A08 (published samples cite 13% charter tax)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/"},{"collected":"2026-10-13","id":"italy","name":"Italy","rate":22,"source":"Charter Cost Guide — A01/A06/A08 (published samples cite 22% VAT)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/"},{"collected":"2026-10-13","id":"france","name":"France","rate":20,"source":"Charter Cost Guide — A01/A06 (published samples cite 20% tax)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/"},{"collected":null,"id":"none","name":"No tax / not sure","rate":0,"source":null,"sourceUrl":null}],"tipRanges":[{"collected":"2026-10-13","highPct":15,"id":"med","lowPct":10,"name":"Mediterranean","note":"Calculated on the base fee only, not on APA or tax. Discretionary.","source":"Charter Cost Guide — Crew tipping guide (VeyraDeck/MYBA 2026, My Greek Charter, BookYachtCharter, Worldwide Boat, SherpaReport)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"},{"collected":"2026-10-13","highPct":20,"id":"caribbean","lowPct":15,"name":"Caribbean and United States","note":"Calculated on the base fee only. Discretionary.","source":"Charter Cost Guide — Crew tipping guide (VeyraDeck/MYBA 2026, BookYachtCharter, SherpaReport)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"},{"collected":"2026-10-13","highPct":15,"id":"other","lowPct":10,"name":"Elsewhere","note":"Around 10% is the most commonly suggested figure across guides. Discretionary.","source":"Charter Cost Guide — Crew tipping guide (around 10% is the most commonly suggested figure)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"}],"yachtPresets":[{"apaDefault":null,"collected":"2026-10-13","currency":"EUR","currencySymbol":"€","high":9000,"id":"bareboat","low":3500,"name":"Bareboat sailing yacht","note":"Before fuel, marina fees, skipper and damage deposit","source":"Charter Cost Guide — How to charter a yacht / Crewed vs bareboat guides (operator price lists)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/crewed-vs-bareboat/","tipDefault":null,"unit":"week"},{"apaDefault":25,"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":null,"id":"small-crewed","low":10000,"name":"Small crewed yacht / catamaran","note":"Starting figure; larger or newer yachts cost more","source":"Charter Cost Guide — Yacht charter cost guide (A01, broker samples)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/","tipDefault":10,"unit":"week"},{"apaDefault":25,"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":45000,"id":"mid-cat","low":15000,"name":"Mid-size crewed catamaran","note":null,"source":"Charter Cost Guide data bank (operator samples; APA ~25% per LuxuryCharterGroup)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/","tipDefault":10,"unit":"week"},{"apaDefault":35,"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":94000,"id":"motor-80-100","low":41000,"name":"Motor yacht, 80 to 100 ft","note":null,"source":"BoatCrowd yacht charter cost guides, via Charter Cost Guide (A06/A08)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/greece-vs-croatia-vs-italy/","tipDefault":10,"unit":"week"},{"apaDefault":35,"collected":"2026-10-13","currency":"USD","currencySymbol":"$","high":null,"id":"large-motor","low":100000,"name":"Large motor yacht (100 ft+)","note":"Starting figure; superyachts run far higher","source":"Charter Cost Guide — Yacht charter cost guide (A01, broker samples)","sourceUrl":"https://charter-cost-guide.pages.dev/yacht-charter/cost/","tipDefault":10,"unit":"week"}]}
+{
+  "asOf": "2026-10-15",
+  "bareboat": {
+    "skipperCollected": "2026-10-13",
+    "skipperCurrency": "EUR",
+    "skipperHigh": 250,
+    "skipperLow": 180,
+    "skipperSource": "Charter Cost Guide data bank (operator examples; single source — treat as indicative)",
+    "skipperSourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/crewed-vs-bareboat/",
+    "skipperUnit": "day"
+  },
+  "jetCategories": [
+    {
+      "collected": "2026-10-15",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 7000,
+      "id": "light",
+      "low": 2000,
+      "name": "Light jet (about 6 seats)",
+      "note": "Min-max across 10 independent published sources; core cluster $2,200–$5,500. Most sources are broker/operator sites (skew high); evoJets floor excludes taxes/crew/fees.",
+      "source": "Min-max across 4+ independent published sources (see sources array); collected 2026-10-15",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/private-jets/cost/",
+      "unit": "hour",
+      "sources": [
+        {
+          "name": "Simple Flying (2026)",
+          "url": "https://simpleflying.com/how-much-private-jet-flight-actually-cost-per-hour-2026/",
+          "range": "$3,000–$4,500",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "evoJets (US broker)",
+          "url": "https://www.evojets.com/private-jet-charter-flights-to-fort-myers-fl/",
+          "range": "$2,200–$3,000 (flight charges only)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "Charter-A (EU broker)",
+          "url": "https://charter-a.com/complete-guide-to-private-jet-charter-costs-in-2026-europe-the-uk/",
+          "range": "€1,800–€4,000 (≈$2,020–$4,490)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "Haute Jets (US operator)",
+          "url": "https://www.hautejets.com/pricing",
+          "range": "$5,000–$7,000",
+          "collected": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "collected": "2026-10-15",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 9500,
+      "id": "midsize",
+      "low": 2750,
+      "name": "Midsize jet (about 8 seats)",
+      "note": "Min-max across 9 independent published sources; core cluster $2,750–$6,000. Most sources are broker/operator sites.",
+      "source": "Min-max across 3+ independent published sources (see sources array); collected 2026-10-15",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/private-jets/cost/",
+      "unit": "hour",
+      "sources": [
+        {
+          "name": "Simple Flying (2026)",
+          "url": "https://simpleflying.com/how-much-private-jet-flight-actually-cost-per-hour-2026/",
+          "range": "$4,000–$6,000",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "Los Angeles Private Jets (US operator)",
+          "url": "https://www.losangelesprivatejets.com/faq/private-jet-charter-rates/",
+          "range": "$2,750–$5,000 (aircraft rental only)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "JetVice (EU broker)",
+          "url": "https://www.jetvice.net/post/how-much-does-it-cost-to-charter-a-private-jet-2026-guide",
+          "range": "€5,500–€8,500 (≈$6,170–$9,540)",
+          "collected": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "collected": "2026-10-15",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 12300,
+      "id": "super-midsize",
+      "low": 3400,
+      "name": "Super-midsize jet",
+      "note": "Min-max across 9 independent published sources; core cluster $3,800–$8,000.",
+      "source": "Min-max across 3+ independent published sources (see sources array); collected 2026-10-15",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/private-jets/cost/",
+      "unit": "hour",
+      "sources": [
+        {
+          "name": "Simple Flying (2026)",
+          "url": "https://simpleflying.com/how-much-private-jet-flight-actually-cost-per-hour-2026/",
+          "range": "$6,000–$8,000",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "The Aviation Factory (EU broker)",
+          "url": "https://www.the-aviation-factory.com/en/blog/how-much-does-it-cost-to-rent-a-private-jet/",
+          "range": "€3,000–€4,500 (≈$3,370–$5,050)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "JetVice (EU broker)",
+          "url": "https://www.jetvice.net/post/how-much-does-it-cost-to-charter-a-private-jet-2026-guide",
+          "range": "€7,500–€11,000 (≈$8,410–$12,340)",
+          "collected": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "collected": "2026-10-15",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 16800,
+      "id": "heavy",
+      "low": 4500,
+      "name": "Large / heavy jet (12+ seats)",
+      "note": "Min-max across 10 independent published sources; core cluster $5,000–$12,000.",
+      "source": "Min-max across 3+ independent published sources (see sources array); collected 2026-10-15",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/private-jets/cost/",
+      "unit": "hour",
+      "sources": [
+        {
+          "name": "Simple Flying (2026)",
+          "url": "https://simpleflying.com/how-much-private-jet-flight-actually-cost-per-hour-2026/",
+          "range": "$8,000–$15,000",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "The Aviation Factory (EU broker)",
+          "url": "https://www.the-aviation-factory.com/en/blog/how-much-does-it-cost-to-rent-a-private-jet/",
+          "range": "€4,000–€5,500 (≈$4,490–$6,170)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "JetVice (EU broker)",
+          "url": "https://www.jetvice.net/post/how-much-does-it-cost-to-charter-a-private-jet-2026-guide",
+          "range": "€10,000–€15,000 (≈$11,220–$16,830)",
+          "collected": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "collected": "2026-10-15",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 28000,
+      "id": "ultra-long-range",
+      "low": 8000,
+      "name": "Ultra-long-range jet",
+      "note": "Min-max across 13 independent published sources; credible floor $8,000 (excludes anomalously low €5,000 figure from The Aviation Factory).",
+      "source": "Min-max across 3+ independent published sources (see sources array); collected 2026-10-15",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/private-jets/cost/",
+      "unit": "hour",
+      "sources": [
+        {
+          "name": "Los Angeles Private Jets (US operator)",
+          "url": "https://www.losangelesprivatejets.com/faq/private-jet-charter-rates/",
+          "range": "$8,000–$12,000 (aircraft rental only)",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "Simple Flying (2026)",
+          "url": "https://simpleflying.com/how-much-private-jet-charter-san-francisco-paris-actually-costs-2026/",
+          "range": "G650ER $12,000–$15,000",
+          "collected": "2026-10-15"
+        },
+        {
+          "name": "Charter-A (EU broker)",
+          "url": "https://charter-a.com/complete-guide-to-private-jet-charter-costs-in-2026-europe-the-uk/",
+          "range": "€12,000–€25,000+ (≈$13,460–$28,050+)",
+          "collected": "2026-10-15"
+        }
+      ]
+    }
+  ],
+  "note": "Indicative ranges compiled from the sources listed with each preset. Reviewed quarterly. These are planning ranges, not quotes.",
+  "taxPresets": [
+    {
+      "collected": "2026-10-13",
+      "id": "croatia",
+      "name": "Croatia",
+      "rate": 13,
+      "source": "Charter Cost Guide — A01/A06/A08 (published samples cite 13% charter tax)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/"
+    },
+    {
+      "collected": "2026-10-13",
+      "id": "italy",
+      "name": "Italy",
+      "rate": 22,
+      "source": "Charter Cost Guide — A01/A06/A08 (published samples cite 22% VAT)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/"
+    },
+    {
+      "collected": "2026-10-15",
+      "id": "france",
+      "name": "France",
+      "rate": 20,
+      "source": "Charter Cost Guide — A01/A06 (published samples cite 20% VAT); rule verified via SuperyachtNews/Breaking Travel News (BOFIP bulletin, Jan 2020; confirmed Jan 2026)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/",
+      "note": "20% applies to time in EU waters; pro-rata exclusion for international-water time (BOI-TVA-CHAMP-20-50-30-20200129, since Mar 2020)"
+    },
+    {
+      "collected": null,
+      "id": "none",
+      "name": "No tax / not sure",
+      "rate": 0,
+      "source": null,
+      "sourceUrl": null
+    }
+  ],
+  "tipRanges": [
+    {
+      "collected": "2026-10-13",
+      "highPct": 15,
+      "id": "med",
+      "lowPct": 10,
+      "name": "Mediterranean",
+      "note": "Calculated on the base fee only, not on APA or tax. Discretionary.",
+      "source": "Charter Cost Guide — Crew tipping guide (VeyraDeck/MYBA 2026, My Greek Charter, BookYachtCharter, Worldwide Boat, SherpaReport)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"
+    },
+    {
+      "collected": "2026-10-13",
+      "highPct": 20,
+      "id": "caribbean",
+      "lowPct": 15,
+      "name": "Caribbean and United States",
+      "note": "Calculated on the base fee only. Discretionary.",
+      "source": "Charter Cost Guide — Crew tipping guide (VeyraDeck/MYBA 2026, BookYachtCharter, SherpaReport)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"
+    },
+    {
+      "collected": "2026-10-13",
+      "highPct": 15,
+      "id": "other",
+      "lowPct": 10,
+      "name": "Elsewhere",
+      "note": "Around 10% is the most commonly suggested figure across guides. Discretionary.",
+      "source": "Charter Cost Guide — Crew tipping guide (around 10% is the most commonly suggested figure)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/crew-tipping-guide/"
+    }
+  ],
+  "yachtPresets": [
+    {
+      "apaDefault": null,
+      "collected": "2026-10-13",
+      "currency": "EUR",
+      "currencySymbol": "€",
+      "high": 9000,
+      "id": "bareboat",
+      "low": 3500,
+      "name": "Bareboat sailing yacht",
+      "note": "Before fuel, marina fees, skipper and damage deposit",
+      "source": "Charter Cost Guide — How to charter a yacht / Crewed vs bareboat guides (operator price lists)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/crewed-vs-bareboat/",
+      "tipDefault": null,
+      "unit": "week"
+    },
+    {
+      "apaDefault": 25,
+      "collected": "2026-10-13",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": null,
+      "id": "small-crewed",
+      "low": 10000,
+      "name": "Small crewed yacht / catamaran",
+      "note": "Starting figure; larger or newer yachts cost more",
+      "source": "Charter Cost Guide — Yacht charter cost guide (A01, broker samples)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/",
+      "tipDefault": 10,
+      "unit": "week"
+    },
+    {
+      "apaDefault": 25,
+      "collected": "2026-10-13",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 45000,
+      "id": "mid-cat",
+      "low": 15000,
+      "name": "Mid-size crewed catamaran",
+      "note": null,
+      "source": "Charter Cost Guide data bank (operator samples; APA ~25% per LuxuryCharterGroup)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/",
+      "tipDefault": 10,
+      "unit": "week"
+    },
+    {
+      "apaDefault": 35,
+      "collected": "2026-10-13",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": 94000,
+      "id": "motor-80-100",
+      "low": 41000,
+      "name": "Motor yacht, 80 to 100 ft",
+      "note": null,
+      "source": "BoatCrowd yacht charter cost guides, via Charter Cost Guide (A06/A08)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/greece-vs-croatia-vs-italy/",
+      "tipDefault": 10,
+      "unit": "week"
+    },
+    {
+      "apaDefault": 35,
+      "collected": "2026-10-13",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "high": null,
+      "id": "large-motor",
+      "low": 100000,
+      "name": "Large motor yacht (100 ft+)",
+      "note": "Starting figure; superyachts run far higher",
+      "source": "Charter Cost Guide — Yacht charter cost guide (A01, broker samples)",
+      "sourceUrl": "https://charter-cost-guide.pages.dev/yacht-charter/cost/",
+      "tipDefault": 10,
+      "unit": "week"
+    }
+  ],
+  "seasonMultipliers": [
+    {
+      "id": "high",
+      "name": "High season (Jul–Aug)",
+      "multiplier": 1.3,
+      "note": "Indicative: high-season weekly base prices run ~25-40% above low season (broker/marketplace sources)"
+    },
+    {
+      "id": "shoulder",
+      "name": "Shoulder (May–Jun, Sep)",
+      "multiplier": 1.15,
+      "note": "Indicative: shoulder ~1.2x low season per operator examples"
+    },
+    {
+      "id": "low",
+      "name": "Low season (Oct–Apr)",
+      "multiplier": 1.0,
+      "note": "Baseline"
+    }
+  ],
+  "seasonSources": [
+    {
+      "name": "YachtBooker — bareboat charter price difference high/low season (~40%)",
+      "url": "https://www.yachtbooker.com/bareboat-charter?page=80",
+      "accessed": "15 October 2026"
+    },
+    {
+      "name": "Yachtsys — Trends in Prices and Discounts for Bareboat Charter Yachts (high/low reach 40%; 2015 data)",
+      "url": "https://www.yachtsys.com/Average-Charter-Prices-and-Discounts-for-Bareboat.html",
+      "accessed": "15 October 2026"
+    },
+    {
+      "name": "yacht-rent.com — Yacht Charter Statistics Malta 2026 (low week ~16% below high; updated 2026-03-11)",
+      "url": "https://yacht-rent.com",
+      "accessed": "15 October 2026"
+    }
+  ]
+}
