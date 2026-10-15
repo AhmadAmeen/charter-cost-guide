@@ -123,10 +123,11 @@ const faqSchema = {
             <input type="range" id="jhours" min="1" max="10" value="2" step="1" aria-label="Flight time in hours" />
             <span class="dyn-est-val" id="jhours-v">2 hrs</span>
           </div>
-          <div class="dyn-est-out"><span class="lbl">Estimated before tax</span><span class="num" id="jout">$8k – $15k</span></div>
-          <p class="dyn-est-note">Hourly rate × hours + ~15% taxes &amp; fees. Positioning can add more.</p>
+          <div class="dyn-est-out"><span class="lbl">Estimated before taxes &amp; fees</span><span class="num" id="jout">$7k – $13k</span></div>
+          <p class="dyn-est-note">Hourly rate × hours, before taxes &amp; fees — ask for an all-in quote. Positioning can add more.</p>
           <a class="dyn-est-link" href="/private-jets/cost/">See how we calculate this →</a>
         </div>
+        <p class="dyn-est-tools">Want the full breakdown — APA, tax, tip, per-guest costs and a quote sanity check? Try the <a href="/yacht-charter/cost-calculator/">yacht charter cost calculator</a> or the <a href="/private-jets/cost-calculator/">private jet cost estimator</a>. Free, no signup.</p>
       </div>
     </div>
   </section>
@@ -294,7 +295,7 @@ const faqSchema = {
     var t = JET[document.getElementById('jtype').value];
     var h = +document.getElementById('jhours').value;
     document.getElementById('jhours-v').textContent = h + (h>1?' hrs':' hr');
-    document.getElementById('jout').textContent = '$'+fmt(Math.round(t.low*h*1.15))+' – $'+fmt(Math.round(t.high*h*1.15));
+    document.getElementById('jout').textContent = '$'+fmt(Math.round(t.low*h))+' – $'+fmt(Math.round(t.high*h));
   }
   ['ytype','yweeks'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='ytype'?'change':'input', function(){ yachtCalc(); estUsed('yacht'); }); });
   ['jtype','jhours'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='jtype'?'change':'input', function(){ jetCalc(); estUsed('jet'); }); });

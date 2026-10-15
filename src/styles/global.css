@@ -273,6 +273,8 @@ table.cost-table { width: 100%; border-collapse: collapse; background: var(--whi
 .dyn-est-out .num { font: 700 28px var(--font-head); color: var(--brass-300); white-space: nowrap; }
 .dyn-est-note { font-size: 13px; color: var(--muted); margin-top: 12px; }
 .dyn-est-link { display: inline-block; margin-top: 8px; color: var(--teal); font-weight: 600; font-size: 15px; }
+.dyn-est-tools { margin: 14px 4px 2px; padding: 12px 16px; background: rgba(201,162,39,.12); border: 1px solid rgba(201,162,39,.45); border-radius: 10px; font-size: 15px; color: var(--ink); }
+.dyn-est-tools a { color: var(--teal); font-weight: 700; }
 
 /* Trust counters */
 .dyn-trust { background: var(--white); border-bottom: 1px solid var(--line); }
