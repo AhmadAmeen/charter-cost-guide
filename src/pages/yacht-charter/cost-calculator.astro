@@ -1,0 +1,576 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import Sources from '../../components/Sources.astro';
+import { SITE_URL, EDITOR_DISPLAY_NAME } from '../../config';
+import data from '../../data/charter-data.json';
+import { yachtEstimate, renderYachtResults } from '../../lib/yacht-calc.js';
+
+const url = `${SITE_URL}/yacht-charter/cost-calculator/`;
+const title = 'Yacht Charter Cost Calculator';
+const description =
+  'Estimate your full yacht charter cost by yacht type, weeks, APA, tax and tip, with per-guest costs. Free instant calculator, no signup. See the arithmetic.';
+const h1 = 'Yacht Charter Cost Calculator: Base Fee, APA, Tax and Tip';
+
+// Pre-rendered default example (built at build time so crawlers and no-JS readers see real content).
+const midCat = data.yachtPresets.find((p) => p.id === 'mid-cat');
+const defaultEst = yachtEstimate({
+  baseLow: midCat.low,
+  baseHigh: midCat.high,
+  durationUnit: 'weeks',
+  duration: 1,
+  apaPct: 30,
+  tipPct: 10,
+  taxPct: 13,
+  guests: 8,
+});
+const defaultHtml = renderYachtResults(defaultEst, midCat.currencySymbol);
+
+const faqItems = [
+  {
+    question: 'What is APA on a yacht charter?',
+    answer:
+      'APA stands for Advance Provisioning Allowance: a deposit, usually 25 to 40% of the base fee, that covers running costs during the trip — fuel, food, dockage and similar. The captain spends from it and settles the account at the end; unused funds are normally refunded.',
+  },
+  {
+    question: 'Is the crew tip included in the APA?',
+    answer:
+      'No. The tip is separate and discretionary — around 10% of the base charter fee is the most commonly suggested figure, with 10 to 15% the usual planning range in the Mediterranean and 15 to 20% more common in the Caribbean. It is calculated on the base fee, not on the APA or taxes, and handed to the captain at the end of the charter.',
+  },
+  {
+    question: 'Which tax rate should I pick?',
+    answer:
+      'Published samples cite about 22% VAT in Italy, 20% in France and 13% charter tax in Croatia, calculated on the base fee. Pick the country you will cruise in, or choose "No tax / not sure" to see the before-tax figure and ask your broker how tax applies to your itinerary.',
+  },
+  {
+    question: 'Is this calculator a quote?',
+    answer:
+      'No. It is an estimate built from published weekly ranges, so you can sanity-check a broker quote before you commit. Real prices move with the yacht, season, route, operator and availability — always get a written quote for your exact trip.',
+  },
+  {
+    question: 'Why does the result show a range instead of one number?',
+    answer:
+      'Because charter pricing is a range in real life: the same trip costs different amounts on different yachts and in different months. A single number would look precise while being wrong. The range shows where your trip should land if the inputs are honest.',
+  },
+  {
+    question: 'Can I use this for a 2 or 3 day charter?',
+    answer:
+      'Yes — switch the duration to days. The tool shows a pro-rata floor (base fee times days divided by 7), but short charters are often priced higher per day or carry minimums, so treat the figure as the lowest plausible number and ask the broker.',
+  },
+];
+
+const sources = [
+  { name: 'BoatCrowd — Yacht Charter Cost Guides (Italy, France, Croatia)', url: 'https://www.boatcrowd.com/iate-charter-italia/cost', accessed: '13 October 2026' },
+  { name: 'YachtCharterFleet — Yacht Charter Costs Explained', url: 'https://www.yachtcharterfleet.com/advice/yacht-charter-costs-explained.htm', accessed: '13 October 2026' },
+  { name: 'LuxuryCharterGroup — Charter Costs', url: 'https://www.luxurychartergroup.com/post.php/charter-costs-715/', accessed: '13 October 2026' },
+  { name: 'Charter Cost Guide — Crew tipping guide (tip ranges and sources)', url: `${SITE_URL}/yacht-charter/crew-tipping-guide/`, accessed: '15 October 2026' },
+  { name: 'Charter Cost Guide — APA explained', url: `${SITE_URL}/yacht-charter/apa-explained/`, accessed: '15 October 2026' },
+];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: h1,
+  description,
+  author: { '@type': 'Organization', name: EDITOR_DISPLAY_NAME },
+  publisher: { '@type': 'Organization', name: 'Charter Cost Guide' },
+  datePublished: '2026-10-15',
+  dateModified: '2026-10-15',
+  mainEntityOfPage: url,
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Yacht Charter', item: `${SITE_URL}/yacht-charter/` },
+    { '@type': 'ListItem', position: 3, name: title, item: url },
+  ],
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+
+const typeOptions = data.yachtPresets.map(
+  (p) =>
+    `<option value="${p.id}"${p.id === 'mid-cat' ? ' selected' : ''}>${p.name} — ${p.currencySymbol}${p.low.toLocaleString('en-US')}${p.high ? '–' + p.currencySymbol + p.high.toLocaleString('en-US') : '+'} / week</option>`
+);
+const taxOptions = data.taxPresets
+  .map((t) => `<option value="${t.id}"${t.id === 'croatia' ? ' selected' : ''}>${t.name}${t.rate ? ` (${t.rate}%)` : ''}</option>`)
+  .join('');
+const tipRegionOptions = data.tipRanges
+  .map((t) => `<option value="${t.id}">${t.name} (${t.lowPct}–${t.highPct}%)</option>`)
+  .join('');
+---
+
+<Base title={title} description={description} canonical={url} jsonLd={[articleLd, breadcrumbLd, faqLd]}>
+  <div class="container">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Yacht Charter', href: '/yacht-charter/' }, { name: title, href: '/yacht-charter/cost-calculator/' }]} />
+    <article class="prose">
+      <h1>{h1}</h1>
+      <p class="article-meta">By {EDITOR_DISPLAY_NAME} · Updated 15 October 2026</p>
+      <p class="short-answer">
+        Pick your yacht type and trip length to estimate the full charter cost — base fee plus APA, crew tip and local tax — as a range, not a single number. The arithmetic is shown line by line, with per-guest costs, a two-quote comparison and a quote sanity check.
+      </p>
+      <p class="trust-line"><strong>Estimate only, not a quote.</strong> Real prices depend on season, route, operator and availability.</p>
+    </article>
+
+    <section class="tool" aria-label="Yacht charter cost calculator">
+      <form id="yacht-form" class="tool-grid" onsubmit="return false">
+        <fieldset>
+          <legend>Your trip</legend>
+          <label for="y-type">Yacht type</label>
+          <select id="y-type" set:html={typeOptions.join('')} />
+          <div id="y-custom-wrap" hidden>
+            <label for="y-custom">Your base fee (per week)</label>
+            <div class="input-row">
+              <input id="y-custom" type="number" min="0" step="500" value="50000" inputmode="numeric" />
+              <select id="y-cur" aria-label="Currency">
+                <option value="$" selected>$ USD</option>
+                <option value="€">€ EUR</option>
+                <option value="£">£ GBP</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-row">
+            <div>
+              <label for="y-unit">Duration unit</label>
+              <select id="y-unit">
+                <option value="weeks" selected>Weeks</option>
+                <option value="days">Days (2–7)</option>
+              </select>
+            </div>
+            <div>
+              <label for="y-dur">Duration</label>
+              <input id="y-dur" type="number" min="1" max="4" step="1" value="1" inputmode="numeric" />
+            </div>
+            <div>
+              <label for="y-guests">Guests</label>
+              <input id="y-guests" type="number" min="1" max="40" step="1" value="8" inputmode="numeric" />
+            </div>
+          </div>
+          <p class="field-note" id="y-bareboat-note" hidden>Bareboat mode: APA, tip and tax are replaced by your own running-cost figures below.</p>
+        </fieldset>
+
+        <fieldset id="y-crewed-fields">
+          <legend>Cost layers <span class="pct-note">(percentages of the base fee — all editable)</span></legend>
+          <div class="input-row">
+            <div>
+              <label for="y-apa">APA %</label>
+              <input id="y-apa" type="number" min="0" max="100" step="1" value="30" inputmode="decimal" />
+            </div>
+            <div>
+              <label for="y-tip">Tip %</label>
+              <input id="y-tip" type="number" min="0" max="100" step="1" value="10" inputmode="decimal" />
+            </div>
+            <div>
+              <label for="y-taxpreset">Tax</label>
+              <select id="y-taxpreset" set:html={taxOptions} />
+            </div>
+            <div id="y-taxcustom-wrap" hidden>
+              <label for="y-taxcustom">Custom tax %</label>
+              <input id="y-taxcustom" type="number" min="0" max="100" step="1" value="0" inputmode="decimal" />
+            </div>
+          </div>
+          <p class="field-note">APA usually runs 25–40% of the base fee (about 25% on catamarans, about 35% on motor yachts). The tip is discretionary — around 10% is the most commonly suggested figure.</p>
+        </fieldset>
+
+        <fieldset id="y-bareboat-fields" hidden>
+          <legend>Bareboat extras <span class="pct-note">(your own figures — no defaults)</span></legend>
+          <div class="input-row">
+            <div>
+              <label for="y-fuel">Fuel</label>
+              <input id="y-fuel" type="number" min="0" step="10" value="0" inputmode="numeric" />
+            </div>
+            <div>
+              <label for="y-marina">Marinas</label>
+              <input id="y-marina" type="number" min="0" step="10" value="0" inputmode="numeric" />
+            </div>
+            <div>
+              <label for="y-cleaning">End cleaning</label>
+              <input id="y-cleaning" type="number" min="0" step="10" value="0" inputmode="numeric" />
+            </div>
+            <div>
+              <label for="y-skipdays">Skipper days</label>
+              <input id="y-skipdays" type="number" min="0" max="30" step="1" value="7" inputmode="numeric" />
+            </div>
+          </div>
+          <p class="field-note">
+            Skipper rates run about €180–€250 per day (single source — treat as indicative). Adjust below if your quote differs.
+          </p>
+          <div class="input-row">
+            <div>
+              <label for="y-skiplo">Skipper €/day (low)</label>
+              <input id="y-skiplo" type="number" min="0" step="10" value="180" inputmode="numeric" />
+            </div>
+            <div>
+              <label for="y-skiph">Skipper €/day (high)</label>
+              <input id="y-skiph" type="number" min="0" step="10" value="250" inputmode="numeric" />
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="tool-actions">
+          <button type="button" id="y-reset" class="btn-ghost">Reset</button>
+          <button type="button" id="y-copy" class="btn-ghost">Copy summary</button>
+          <button type="button" id="y-print" class="btn-ghost">Print</button>
+        </div>
+      </form>
+
+      <div class="tool-results" aria-live="polite" aria-atomic="true">
+        <h2>Your estimate</h2>
+        <div id="y-out" set:html={defaultHtml} />
+        <p class="data-line">Data as of {data.asOf}. Presets from the sources listed below. <button type="button" id="y-copylink" class="link-btn">Copy link to this estimate</button></p>
+      </div>
+
+      <div class="tool-modules">
+        <section class="module" aria-label="Tip guidance">
+          <h3>Tip guidance by region</h3>
+          <div class="input-row">
+            <div>
+              <label for="y-tipregion">Region</label>
+              <select id="y-tipregion" set:html={tipRegionOptions} />
+            </div>
+            <div class="btn-row">
+              <button type="button" id="y-tipuse-lo" class="btn-ghost">Use low end</button>
+              <button type="button" id="y-tipuse-hi" class="btn-ghost">Use high end</button>
+            </div>
+          </div>
+          <p id="y-tipout" class="module-out" aria-live="polite"></p>
+          <p class="field-note">Tip is discretionary and calculated on the base fee only — never on APA or tax. Hand it to the captain at the end of the charter. <a href="/yacht-charter/crew-tipping-guide/">Tipping guide with sources</a>.</p>
+        </section>
+
+        <section class="module" aria-label="Compare two quotes">
+          <h3>Compare two quotes</h3>
+          <p class="field-note">Enter each quote's base fee and any extra fees. Your APA, tip and tax settings above apply to both.</p>
+          <div class="input-row">
+            <div><label for="y-qa">Quote A base fee</label><input id="y-qa" type="number" min="0" step="500" value="50000" inputmode="numeric" /></div>
+            <div><label for="y-qaf">Quote A other fees</label><input id="y-qaf" type="number" min="0" step="100" value="0" inputmode="numeric" /></div>
+            <div><label for="y-qb">Quote B base fee</label><input id="y-qb" type="number" min="0" step="500" value="45000" inputmode="numeric" /></div>
+            <div><label for="y-qbf">Quote B other fees</label><input id="y-qbf" type="number" min="0" step="100" value="2000" inputmode="numeric" /></div>
+          </div>
+          <p id="y-cmpout" class="module-out" aria-live="polite"></p>
+        </section>
+
+        <section class="module" aria-label="Quote sanity check">
+          <h3>Quote sanity check</h3>
+          <p class="field-note">Enter a yacht type and the base fee you were quoted. The tool shows where it sits against the published range — it never says a quote is good or bad, only where it sits and what to ask.</p>
+          <div class="input-row">
+            <div><label for="y-stype">Yacht type</label><select id="y-stype"></select></div>
+            <div><label for="y-squote">Quoted base fee (per week)</label><input id="y-squote" type="number" min="0" step="500" value="38000" inputmode="numeric" /></div>
+          </div>
+          <p id="y-sanout" class="module-out" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <p class="privacy-line">Privacy: everything runs in your browser. Nothing you enter is sent or stored anywhere.</p>
+    </section>
+
+    <div class="prose">
+      <h2>How we calculate this</h2>
+      <p>
+        The maths is deliberately simple, because charter pricing is simple once the layers are visible. The base fee is the weekly (or daily) price of the yacht itself. On a crewed charter, three layers sit on top of it: the APA (Advance Provisioning Allowance, usually 25–40% of the base fee) covers running costs like fuel, food and dockage; the crew tip (around 10% is the most commonly suggested figure, and it is discretionary) rewards the crew; and local tax or VAT (published samples cite 22% in Italy, 20% in France and 13% in Croatia) is added on top. The tool multiplies each layer by the base total and adds them up, then divides by your guest count for the per-person figure.
+      </p>
+      <p>
+        Two assumptions matter. First, APA, tip and tax are all calculated on the <em>base fee only</em> — that is how the sources describe them, and it is why the all-in multiplier lands around 1.4 to 1.7 times the base rather than compounding on itself. Second, the day input shows a pro-rata floor: the base fee times days divided by seven. Short charters are often priced higher per day, or carry minimums, so treat that figure as the lowest plausible number and ask the broker for the real one.
+      </p>
+      <h2>Three worked examples</h2>
+      <p>
+        <strong>Crewed catamaran, one week, eight guests.</strong> A $50,000 base fee with 30% APA ($15,000), a 10% tip ($5,000) and Croatia's 13% charter tax ($6,500) totals <strong>$76,500</strong> — a 1.53 multiplier, or about $9,562.50 per guest. This is the trip shape where first-timers get caught out: the headline price and the final bill differ by more than half.
+      </p>
+      <p>
+        <strong>Bareboat, one week, doing it yourself.</strong> A €5,000 base fee plus a skipper for 7 days at €180–€250 a day comes to <strong>€6,260–€6,750</strong> before fuel and marina fees, which you pay directly. Add roughly €150–€400 for marinas and €100–€250 for fuel on a typical 38–40 ft week (operator examples), and the honest all-in sits near €7,000 — before the refundable damage deposit, which is held, not spent.
+      </p>
+      <p>
+        <strong>Three days on a $30,000-a-week yacht.</strong> The pro-rata floor is $30,000 × 3 ÷ 7 = <strong>$12,857</strong> for the base fee alone, before APA, tip and tax. In practice, few operators pro-rate neatly — expect a higher per-day figure or a weekly minimum, which is exactly what to ask about first.
+      </p>
+      <h2>What the estimate leaves out</h2>
+      <p>
+        Season moves everything: July and August cost the most, May and September usually less. The yacht's age and condition move the base fee inside (or outside) the preset ranges. Delivery or repositioning fees for one-way itineraries, premium drinks, special catering and communications packages sit outside the formula — put them in the "other fees" box when comparing quotes. There is no currency conversion: pick the currency your quote is in. And the tool knows nothing about availability — a perfect estimate means nothing if the yacht is booked.
+      </p>
+
+      <section class="do-next" aria-label="Do this next">
+        <h2>Do this next</h2>
+        <p>Take your estimate and run it past the one-page <a href="/checklist/">charter quote checklist</a> — it lists everything to confirm with a broker before you pay anything. For the full cost breakdown behind these numbers, read the <a href="/yacht-charter/cost/">yacht charter cost guide</a>.</p>
+      </section>
+
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/yacht-charter/cost/">How much does it cost to charter a yacht?</a> — the full cost guide this calculator is built from</li>
+        <li><a href="/yacht-charter/apa-explained/">APA explained</a> — what the Advance Provisioning Allowance covers and how it is settled</li>
+        <li><a href="/yacht-charter/crewed-vs-bareboat/">Crewed vs bareboat</a> — which charter type fits your group and budget</li>
+        <li><a href="/yacht-charter/crew-tipping-guide/">Yacht crew tipping guide</a> — how much to tip, when, and how it is shared</li>
+      </ul>
+
+      <p class="dates-line"><strong>Last verified:</strong> 15 October 2026 · <strong>Next review:</strong> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
+    </div>
+
+    <Faq items={faqItems} />
+    <Sources items={sources} />
+  </div>
+</Base>
+
+<style>
+  .short-answer { font-size: 1.1rem; border-left: 4px solid var(--gold, #c9a227); padding-left: 1rem; }
+  .trust-line { background: #fff8e6; border: 1px solid #e8d48b; border-radius: 8px; padding: 0.75rem 1rem; }
+  .tool { border: 1px solid var(--border, #e2ddd2); border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0; background: #fff; }
+  .tool fieldset { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; margin: 0 0 1rem; }
+  .tool legend { font-weight: 700; padding: 0 0.5rem; }
+  .pct-note { font-weight: 400; font-size: 0.85rem; color: #666; }
+  .tool label { display: block; font-weight: 600; font-size: 0.9rem; margin: 0.6rem 0 0.25rem; }
+  .tool input, .tool select { width: 100%; min-height: 48px; font-size: 1rem; padding: 0.5rem 0.75rem; border: 1px solid #b9b2a4; border-radius: 6px; background: #fff; }
+  .tool input:focus-visible, .tool select:focus-visible, .tool button:focus-visible { outline: 3px solid #2a5db0; outline-offset: 2px; }
+  .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+  .field-note { font-size: 0.85rem; color: #555; margin: 0.5rem 0 0; }
+  .tool-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .btn-ghost { min-height: 48px; padding: 0.6rem 1.1rem; border: 1px solid #8a8474; background: #f7f4ec; border-radius: 6px; font-size: 0.95rem; cursor: pointer; }
+  .btn-ghost:hover { background: #efe9d8; }
+  .link-btn { background: none; border: none; color: #2a5db0; text-decoration: underline; cursor: pointer; font-size: inherit; padding: 0; }
+  .tool-results { margin-top: 1rem; border-top: 2px solid var(--border, #e2ddd2); padding-top: 1rem; min-height: 320px; }
+  .trow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; border-bottom: 1px dotted #d8d2c2; }
+  .trow span { color: #444; }
+  .trow.ttotal { border-bottom: none; font-size: 1.25rem; margin-top: 0.4rem; }
+  .trow.ttotal strong { color: #1a3a6b; }
+  .tnote { font-size: 0.85rem; color: #555; background: #f7f4ec; border-radius: 6px; padding: 0.6rem 0.8rem; }
+  .data-line { font-size: 0.8rem; color: #777; }
+  .tool-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .module { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; background: #fbfaf7; }
+  .module h3 { margin-top: 0; font-size: 1.05rem; }
+  .module-out { font-weight: 600; min-height: 2.5rem; }
+  .btn-row { display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap; }
+  .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
+  .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+  .do-next h2 { margin-top: 0; }
+  .dates-line { font-size: 0.9rem; color: #555; }
+  @media print {
+    header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }
+    .tool { border: none; }
+    body { background: #fff; color: #000; }
+  }
+  @media (max-width: 560px) { .tool { padding: 0.9rem; } }
+</style>
+
+<script>
+  import {
+    yachtEstimate, bareboatExtras, compareQuotes, sanityCheck, tipRange,
+    renderYachtResults, renderBareboatResults, fmtRange, fmtMoneyFull,
+  } from '../../lib/yacht-calc.js';
+  import data from '../../data/charter-data.json';
+
+  const $ = (id) => document.getElementById(id);
+  const presets = data.yachtPresets;
+  const byId = (id) => presets.find((p) => p.id === id);
+
+  // Sanity-check type select shares the presets.
+  $('y-stype').innerHTML = presets
+    .map((p) => `<option value="${p.id}">${p.name} — ${p.currencySymbol}${p.low.toLocaleString('en-US')}${p.high ? '–' + p.currencySymbol + p.high.toLocaleString('en-US') : '+'} / week</option>`)
+    .join('');
+
+  function isBareboat() { return $('y-type').value === 'bareboat'; }
+
+  function currentSymbol() {
+    if ($('y-type').value === 'custom') return $('y-cur').value;
+    const p = byId($('y-type').value);
+    return p ? p.currencySymbol : '$';
+  }
+
+  function taxPct() {
+    const v = $('y-taxpreset').value;
+    if (v === 'custom') return Math.min(100, Math.max(0, Number($('y-taxcustom').value) || 0));
+    const t = data.taxPresets.find((x) => x.id === v);
+    return t ? t.rate : 0;
+  }
+
+  function readInputs() {
+    const type = $('y-type').value;
+    const custom = type === 'custom';
+    const p = custom ? null : byId(type);
+    const baseLow = custom ? Math.max(0, Number($('y-custom').value) || 0) : p.low;
+    const baseHigh = custom ? baseLow : p.high;
+    let unit = $('y-unit').value;
+    let dur = Math.round(Number($('y-dur').value) || 1);
+    if (unit === 'days') { dur = Math.min(7, Math.max(2, dur)); }
+    else { dur = Math.min(4, Math.max(1, dur)); unit = 'weeks'; }
+    return {
+      type, custom, symbol: currentSymbol(), baseLow, baseHigh, unit, dur,
+      apa: Math.min(100, Math.max(0, Number($('y-apa').value) || 0)),
+      tip: Math.min(100, Math.max(0, Number($('y-tip').value) || 0)),
+      tax: taxPct(),
+      guests: Math.min(40, Math.max(1, Math.round(Number($('y-guests').value) || 1))),
+      bareboat: {
+        fuel: Math.max(0, Number($('y-fuel').value) || 0),
+        marina: Math.max(0, Number($('y-marina').value) || 0),
+        cleaning: Math.max(0, Number($('y-cleaning').value) || 0),
+        skipperDays: Math.max(0, Math.round(Number($('y-skipdays').value) || 0)),
+        skipperLow: Math.max(0, Number($('y-skiplo').value) || 0),
+        skipperHigh: Math.max(0, Number($('y-skiph').value) || 0),
+      },
+    };
+  }
+
+  function render() {
+    const s = readInputs();
+    const bb = isBareboat();
+    $('y-crewed-fields').hidden = bb;
+    $('y-bareboat-fields').hidden = !bb;
+    $('y-bareboat-note').hidden = !bb;
+    $('y-custom-wrap').hidden = s.type !== 'custom';
+    $('y-taxcustom-wrap').hidden = $('y-taxpreset').value !== 'custom';
+    $('y-dur').min = s.unit === 'days' ? 2 : 1;
+    $('y-dur').max = s.unit === 'days' ? 7 : 4;
+
+    if (bb) {
+      const r = bareboatExtras({ baseFee: s.baseLow, ...s.bareboat });
+      $('y-out').innerHTML = renderBareboatResults(r, s.symbol);
+    } else {
+      const est = yachtEstimate({
+        baseLow: s.baseLow, baseHigh: s.baseHigh, durationUnit: s.unit, duration: s.dur,
+        apaPct: s.apa, tipPct: s.tip, taxPct: s.tax, guests: s.guests,
+      });
+      $('y-out').innerHTML = renderYachtResults(est, s.symbol);
+    }
+    renderTipModule(s);
+    renderCompare(s);
+    renderSanity(s);
+    syncUrl(s, bb);
+  }
+
+  function renderTipModule(s) {
+    const t = data.tipRanges.find((x) => x.id === $('y-tipregion').value) || data.tipRanges[0];
+    const [lo, hi] = tipRange({ baseFee: s.baseLow, lowPct: t.lowPct, highPct: t.highPct });
+    $('y-tipout').textContent =
+      `Published guidance for ${t.name}: ${t.lowPct}–${t.highPct}% of the base fee = ${fmtMoneyFull(lo, s.symbol)}–${fmtMoneyFull(hi, s.symbol)} on your current base.`;
+  }
+
+  function renderCompare(s) {
+    const r = compareQuotes({
+      aBase: $('y-qa').value, aFees: $('y-qaf').value,
+      bBase: $('y-qb').value, bFees: $('y-qbf').value,
+      apaPct: s.apa, tipPct: s.tip, taxPct: s.tax,
+    });
+    $('y-cmpout').textContent =
+      `Quote A all-in: ${fmtMoneyFull(r.a, s.symbol)} · Quote B all-in: ${fmtMoneyFull(r.b, s.symbol)} — Quote ${r.cheaper} is cheaper by ${fmtMoneyFull(r.difference, s.symbol)}.`;
+  }
+
+  function renderSanity(s) {
+    const p = byId($('y-stype').value) || presets[2];
+    const quote = Number($('y-squote').value) || 0;
+    const r = sanityCheck({ quote, low: p.low, high: p.high });
+    const range = `${p.currencySymbol}${p.low.toLocaleString('en-US')}${p.high ? '–' + p.currencySymbol + p.high.toLocaleString('en-US') : '+'}/week`;
+    let msg;
+    if (r.verdict === 'below') {
+      msg = `Below the published range (${range}). Ask what is excluded — or whether the yacht is smaller, older, or off-season.`;
+    } else if (r.verdict === 'above') {
+      msg = `Above the published range (${range})${r.pctAbove != null ? ` by about ${r.pctAbove}%` : ''}. Ask what is included: newer yacht, peak dates, or extras bundled into the base.`;
+    } else if (r.verdict === 'within') {
+      msg = `Within the published range (${range})${r.positionPct != null ? ` — about ${r.positionPct}% of the way up` : ''}. Compare the APA, tax and tip terms before deciding.`;
+    } else {
+      msg = 'Enter a quoted base fee to check it.';
+    }
+    $('y-sanout').textContent = msg;
+  }
+
+  function syncUrl(s, bb) {
+    const q = new URLSearchParams({
+      type: s.type, unit: s.unit, dur: s.dur, apa: s.apa, tip: s.tip,
+      taxpreset: $('y-taxpreset').value, taxcustom: $('y-taxcustom').value, guests: s.guests,
+    });
+    if (s.custom) { q.set('base', s.baseLow); q.set('cur', s.symbol); }
+    if (bb) {
+      q.set('fuel', s.bareboat.fuel); q.set('marina', s.bareboat.marina);
+      q.set('cleaning', s.bareboat.cleaning); q.set('skipdays', s.bareboat.skipperDays);
+    }
+    history.replaceState(null, '', '?' + q.toString());
+  }
+
+  function loadFromUrl() {
+    const q = new URLSearchParams(location.search);
+    if (![...q.keys()].length) return;
+    const set = (id, v) => { if (v !== null && v !== undefined && v !== '') $(id).value = v; };
+    set('y-type', q.get('type')); set('y-unit', q.get('unit')); set('y-dur', q.get('dur'));
+    set('y-apa', q.get('apa')); set('y-tip', q.get('tip'));
+    set('y-taxpreset', q.get('taxpreset')); set('y-taxcustom', q.get('taxcustom'));
+    set('y-guests', q.get('guests')); set('y-custom', q.get('base')); set('y-cur', q.get('cur'));
+    set('y-fuel', q.get('fuel')); set('y-marina', q.get('marina')); set('y-cleaning', q.get('cleaning'));
+    set('y-skipdays', q.get('skipdays'));
+  }
+
+  function summaryText() {
+    const s = readInputs();
+    const bb = isBareboat();
+    const typeName = s.custom ? 'Custom base fee' : (byId(s.type) || {}).name || '';
+    let txt = `Yacht charter estimate (Charter Cost Guide, data as of ${data.asOf}): ${typeName}, ${s.dur} ${s.unit}, ${s.guests} guests. `;
+    if (bb) {
+      const r = bareboatExtras({ baseFee: s.baseLow, ...s.bareboat });
+      txt += `Bareboat total ${fmtRange(r.total, s.symbol, true)} before fuel/marina. `;
+    } else {
+      const est = yachtEstimate({
+        baseLow: s.baseLow, baseHigh: s.baseHigh, durationUnit: s.unit, duration: s.dur,
+        apaPct: s.apa, tipPct: s.tip, taxPct: s.tax, guests: s.guests,
+      });
+      txt += `Base ${fmtRange([est.baseLow, est.baseHigh], s.symbol, true)}; APA ${s.apa}%; tip ${s.tip}%; tax ${s.tax}%. `;
+      txt += `Estimated total ${fmtRange(est.total, s.symbol, true)}; per guest ${fmtRange(est.perGuest, s.symbol, true)}. `;
+    }
+    txt += 'Estimate only, not a quote.';
+    return txt;
+  }
+
+  // Preset change → apply its APA default (editable afterwards).
+  $('y-type').addEventListener('change', () => {
+    const p = byId($('y-type').value);
+    if (p && p.apaDefault != null) $('y-apa').value = p.apaDefault;
+    if (p && p.tipDefault != null) $('y-tip').value = p.tipDefault;
+    render();
+  });
+
+  let started = false, timer = null;
+  function markUsed() {
+    if (!started) { started = true; ev('tool_start', { tool: 'yacht_calculator' }); }
+    clearTimeout(timer);
+    timer = setTimeout(() => ev('tool_complete', { tool: 'yacht_calculator' }), 2500);
+  }
+
+  document.querySelectorAll('#yacht-form input, #yacht-form select, .tool-modules input, .tool-modules select').forEach((el) => {
+    el.addEventListener('input', () => { render(); markUsed(); });
+    el.addEventListener('change', () => { render(); markUsed(); });
+  });
+
+  $('y-tipuse-lo').addEventListener('click', () => {
+    const t = data.tipRanges.find((x) => x.id === $('y-tipregion').value) || data.tipRanges[0];
+    $('y-tip').value = t.lowPct; render(); markUsed();
+  });
+  $('y-tipuse-hi').addEventListener('click', () => {
+    const t = data.tipRanges.find((x) => x.id === $('y-tipregion').value) || data.tipRanges[0];
+    $('y-tip').value = t.highPct; render(); markUsed();
+  });
+
+  $('y-reset').addEventListener('click', () => {
+    $('y-type').value = 'mid-cat'; $('y-unit').value = 'weeks'; $('y-dur').value = 1;
+    $('y-apa').value = 30; $('y-tip').value = 10; $('y-taxpreset').value = 'croatia';
+    $('y-taxcustom').value = 0; $('y-guests').value = 8; $('y-custom').value = 50000;
+    history.replaceState(null, '', location.pathname); render();
+  });
+
+  async function copyText(txt, okMsg) {
+    try { await navigator.clipboard.writeText(txt); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    ev('tool_copy', { tool: 'yacht_calculator' });
+  }
+  $('y-copy').addEventListener('click', () => copyText(summaryText()));
+  $('y-copylink').addEventListener('click', () => copyText(location.href));
+  $('y-print').addEventListener('click', () => { ev('tool_print', { tool: 'yacht_calculator' }); window.print(); });
+
+  loadFromUrl();
+  render();
+</script>

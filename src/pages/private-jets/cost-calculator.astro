@@ -1,0 +1,421 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import Sources from '../../components/Sources.astro';
+import { SITE_URL, EDITOR_DISPLAY_NAME } from '../../config';
+import data from '../../data/charter-data.json';
+import { jetEstimate, renderJetResults } from '../../lib/jet-calc.js';
+
+const url = `${SITE_URL}/private-jets/cost-calculator/`;
+const title = 'Private Jet Charter Cost Estimator';
+const description =
+  'Estimate a private jet charter by flight hours and jet size, with per-passenger costs and a first-class break-even. Free instant estimator, no signup.';
+const h1 = 'Private Jet Charter Cost Estimator (Free Calculator)';
+
+// Pre-rendered default example (built at build time so crawlers and no-JS readers see real content).
+const light = data.jetCategories.find((c) => c.id === 'light');
+const defaultEst = jetEstimate({ rateLow: light.low, rateHigh: light.high, hours: 2, positioningHours: 0, feePct: null, passengers: 4 });
+const defaultHtml = renderJetResults(defaultEst, light.currencySymbol);
+
+const faqItems = [
+  {
+    question: 'How much is a 2-hour private jet flight?',
+    answer:
+      'On a light jet at $3,500–$6,500 per hour, two hours comes to roughly $7,000–$13,000 before taxes and fees — about $1,750–$3,250 per person with four passengers. Positioning time, waiting time and fees move the real quote.',
+  },
+  {
+    question: 'Is the price per seat or per aircraft?',
+    answer:
+      'Per aircraft. You pay for the whole jet however many seats you fill, which is why the per-passenger figure drops sharply as your group grows — the calculator shows it live.',
+  },
+  {
+    question: 'What is a positioning flight?',
+    answer:
+      'The empty flight the jet makes to reach your departure airport (and to leave afterwards). Some operators bill it, some absorb it, some split the difference — the calculator adds your positioning hours at the same hourly rate and labels them "if billed" because practice varies.',
+  },
+  {
+    question: 'Do taxes and fees apply on top?',
+    answer:
+      'Usually, yes — and they vary by country, route and operator. This estimator never invents a fee percentage: it shows the before-fees figure and only adds taxes and fees if you type a percentage yourself. Always ask for an all-in quote.',
+  },
+  {
+    question: 'How do empty legs change the price?',
+    answer:
+      'Empty legs — one-way flights a jet must make anyway — are commonly discounted 25–75% off the standard price. The toggle shows that band, but empty legs are one-way only and the operator can change or cancel them, so never book one for a time-sensitive trip.',
+  },
+];
+
+const sources = [
+  { name: 'Charter Cost Guide — Private jet charter cost guide (hourly ranges and sources)', url: `${SITE_URL}/private-jets/cost/`, accessed: '15 October 2026' },
+  { name: 'Charter Cost Guide — Charter vs first class', url: `${SITE_URL}/private-jets/charter-vs-first-class/`, accessed: '15 October 2026' },
+];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: h1,
+  description,
+  author: { '@type': 'Organization', name: EDITOR_DISPLAY_NAME },
+  publisher: { '@type': 'Organization', name: 'Charter Cost Guide' },
+  datePublished: '2026-10-15',
+  dateModified: '2026-10-15',
+  mainEntityOfPage: url,
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Private Jets', item: `${SITE_URL}/private-jets/` },
+    { '@type': 'ListItem', position: 3, name: title, item: url },
+  ],
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+
+const catOptions = data.jetCategories.map(
+  (c) =>
+    `<option value="${c.id}"${c.id === 'light' ? ' selected' : ''}>${c.name} — ${c.currencySymbol}${c.low.toLocaleString('en-US')}–${c.currencySymbol}${c.high.toLocaleString('en-US')}/hr${c.note ? ' *' : ''}</option>`
+);
+---
+
+<Base title={title} description={description} canonical={url} jsonLd={[articleLd, breadcrumbLd, faqLd]}>
+  <div class="container">
+    <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Private Jets', href: '/private-jets/' }, { name: title, href: '/private-jets/cost-calculator/' }]} />
+    <article class="prose">
+      <h1>{h1}</h1>
+      <p class="article-meta">By {EDITOR_DISPLAY_NAME} · Updated 15 October 2026</p>
+      <p class="short-answer">
+        Enter the jet size and flight hours to estimate the charter cost as a range, with per-passenger maths and a first-class break-even line. No signup, nothing stored — the arithmetic is shown line by line.
+      </p>
+      <p class="trust-line"><strong>Estimate only, not a quote.</strong> Real prices depend on season, route, operator and availability.</p>
+    </article>
+
+    <section class="tool" aria-label="Private jet charter cost estimator">
+      <form id="jet-form" class="tool-grid" onsubmit="return false">
+        <fieldset>
+          <legend>Your flight</legend>
+          <label for="j-cat">Jet category</label>
+          <select id="j-cat" set:html={catOptions.join('')} />
+          <p class="field-note">* Published hourly ranges differ by source — the presets reflect the ranges used across our guides. <a href="/private-jets/cost/">How we sourced them</a>.</p>
+          <div class="input-row">
+            <div>
+              <label for="j-hours">Flight hours</label>
+              <input id="j-hours" type="number" min="0.5" max="24" step="0.5" value="2" inputmode="decimal" />
+            </div>
+            <div>
+              <label for="j-pos">Positioning / waiting hours <span class="pct-note">(if billed)</span></label>
+              <input id="j-pos" type="number" min="0" max="24" step="0.5" value="0" inputmode="decimal" />
+            </div>
+            <div>
+              <label for="j-pax">Passengers (1–19)</label>
+              <input id="j-pax" type="number" min="1" max="19" step="1" value="4" inputmode="numeric" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Adjustments <span class="pct-note">(all optional)</span></legend>
+          <div class="input-row">
+            <div>
+              <label for="j-fee">Add taxes &amp; fees %</label>
+              <input id="j-fee" type="number" min="0" max="100" step="0.5" value="" placeholder="Leave empty" inputmode="decimal" />
+            </div>
+            <div class="check-wrap">
+              <label for="j-empty" class="check-label"><input id="j-empty" type="checkbox" /> Show as an empty leg (25–75% off)</label>
+            </div>
+          </div>
+          <p class="field-note">We never invent a fee percentage. Leave it empty to see the before-fees figure — then ask for an all-in quote.</p>
+        </fieldset>
+
+        <div class="tool-actions">
+          <button type="button" id="j-reset" class="btn-ghost">Reset</button>
+          <button type="button" id="j-copy" class="btn-ghost">Copy summary</button>
+          <button type="button" id="j-print" class="btn-ghost">Print</button>
+        </div>
+      </form>
+
+      <div class="tool-results" aria-live="polite" aria-atomic="true">
+        <h2>Your estimate</h2>
+        <div id="j-out" set:html={defaultHtml} />
+        <p class="data-line">Data as of {data.asOf}. Presets from the sources listed below. <button type="button" id="j-copylink" class="link-btn">Copy link to this estimate</button></p>
+      </div>
+
+      <div class="tool-modules">
+        <section class="module" aria-label="First class break-even">
+          <h3>Jet vs first class break-even</h3>
+          <p class="field-note">Type a first-class fare per person — we never assume one.</p>
+          <div class="input-row">
+            <div><label for="j-fare">First-class fare per person ($)</label><input id="j-fare" type="number" min="0" step="50" value="" placeholder="e.g. 3000" inputmode="numeric" /></div>
+          </div>
+          <p id="j-beout" class="module-out" aria-live="polite"></p>
+        </section>
+
+        <section class="module" aria-label="Group cost split">
+          <h3>Split it with the group</h3>
+          <p id="j-splitout" class="module-out" aria-live="polite"></p>
+          <button type="button" id="j-chatmsg" class="btn-ghost">Copy group-chat message</button>
+        </section>
+
+        <section class="module" aria-label="Quote sanity check">
+          <h3>Quote sanity check</h3>
+          <p class="field-note">Enter the category, hours and the quote you received. The tool shows where it sits against the published range — never whether it is good or bad.</p>
+          <div class="input-row">
+            <div><label for="j-scat">Category</label><select id="j-scat"></select></div>
+            <div><label for="j-shours">Hours</label><input id="j-shours" type="number" min="0.5" max="24" step="0.5" value="2" inputmode="decimal" /></div>
+            <div><label for="j-squote">Quoted total ($)</label><input id="j-squote" type="number" min="0" step="100" value="10500" inputmode="numeric" /></div>
+          </div>
+          <p id="j-sanout" class="module-out" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <p class="privacy-line">Privacy: everything runs in your browser. Nothing you enter is sent or stored anywhere.</p>
+    </section>
+
+    <div class="prose">
+      <h2>How we calculate this</h2>
+      <p>
+        The core formula is hourly rate times flight hours, shown as a range because published hourly rates are ranges: a light jet at $3,500–$6,500 an hour flown for two hours gives $7,000–$13,000. Positioning and waiting hours are added at the same rate and labelled "if billed", because billing practice varies by provider — some absorb the positioning flight, some charge it in full. The per-passenger figure is simply the total divided by your group size, which is why flying with six instead of two transforms the maths.
+      </p>
+      <p>
+        Two things the estimator refuses to invent. Taxes and fees are only added if <em>you</em> type a percentage; otherwise the figure is shown before fees with a prompt to ask for an all-in quote. And the first-class fare in the break-even module has no default at all — the break-even group size is your jet cost divided by the fare you actually see when you search.
+      </p>
+      <h2>Three worked examples</h2>
+      <p>
+        <strong>Light jet, two hours, four passengers.</strong> $3,500–$6,500 × 2 hours = <strong>$7,000–$13,000</strong> before fees, or about $1,750–$3,250 each. Add a 10% taxes-and-fees figure of your own and it becomes $7,700–$14,300.
+      </p>
+      <p>
+        <strong>Midsize jet, four hours, six passengers.</strong> $4,500–$8,500 × 4 = <strong>$18,000–$34,000</strong>, or $3,000–$5,666.67 per person. This is the shape of trip where chartering starts to look rational against premium cabins.
+      </p>
+      <p>
+        <strong>Break-even against first class.</strong> Take the light-jet two-hour range ($7,000–$13,000) and a $3,000 first-class fare you typed in: $7,000 ÷ $3,000 = 2.3 people, $13,000 ÷ $3,000 = 4.3 people. With three or four passengers splitting, the jet can cost less per person than first class — before you count the time saved.
+      </p>
+      <h2>What the estimate leaves out</h2>
+      <p>
+        Many operators apply minimum daily flight hours, so a 45-minute hop may be billed as two hours — ask. Waiting time on the ground, catering beyond the basics, de-icing in winter, and peak-day surcharges all sit outside the formula. Empty-leg pricing is a wide band, not a promise: the 25–75% discount reflects commonly cited ranges, and the operator can move or cancel the flight. Fuel surcharges appear and disappear with oil prices. As with yachts, the tool knows nothing about availability.
+      </p>
+
+      <section class="do-next" aria-label="Do this next">
+        <h2>Do this next</h2>
+        <p>Take your estimate and run it past the one-page <a href="/checklist/">charter quote checklist</a> — it lists everything to confirm with a broker before you pay anything. For the full cost breakdown behind these numbers, read the <a href="/private-jets/cost/">private jet charter cost guide</a>.</p>
+      </section>
+
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="/private-jets/cost/">How much does it cost to charter a private jet?</a> — the full cost guide this estimator is built from</li>
+        <li><a href="/private-jets/charter-vs-first-class/">Charter vs first class</a> — the full per-person comparison</li>
+        <li><a href="/private-jets/group-travel-vs-commercial/">Group travel vs commercial</a> — when splitting a jet beats the airlines</li>
+      </ul>
+
+      <p class="dates-line"><strong>Last verified:</strong> 15 October 2026 · <strong>Next review:</strong> 15 January 2027. Preset ranges are reviewed quarterly; the date on this page always matches the data file.</p>
+    </div>
+
+    <Faq items={faqItems} />
+    <Sources items={sources} />
+  </div>
+</Base>
+
+<style>
+  .short-answer { font-size: 1.1rem; border-left: 4px solid var(--gold, #c9a227); padding-left: 1rem; }
+  .trust-line { background: #fff8e6; border: 1px solid #e8d48b; border-radius: 8px; padding: 0.75rem 1rem; }
+  .tool { border: 1px solid var(--border, #e2ddd2); border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0; background: #fff; }
+  .tool fieldset { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; margin: 0 0 1rem; }
+  .tool legend { font-weight: 700; padding: 0 0.5rem; }
+  .pct-note { font-weight: 400; font-size: 0.85rem; color: #666; }
+  .tool label { display: block; font-weight: 600; font-size: 0.9rem; margin: 0.6rem 0 0.25rem; }
+  .tool input, .tool select { width: 100%; min-height: 48px; font-size: 1rem; padding: 0.5rem 0.75rem; border: 1px solid #b9b2a4; border-radius: 6px; background: #fff; }
+  .tool input:focus-visible, .tool select:focus-visible, .tool button:focus-visible { outline: 3px solid #2a5db0; outline-offset: 2px; }
+  .tool input[type="checkbox"] { width: 1.4rem; min-height: 1.4rem; margin-right: 0.5rem; vertical-align: middle; }
+  .check-wrap { display: flex; align-items: flex-end; }
+  .check-label { font-weight: 600; }
+  .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+  .field-note { font-size: 0.85rem; color: #555; margin: 0.5rem 0 0; }
+  .tool-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .btn-ghost { min-height: 48px; padding: 0.6rem 1.1rem; border: 1px solid #8a8474; background: #f7f4ec; border-radius: 6px; font-size: 0.95rem; cursor: pointer; }
+  .btn-ghost:hover { background: #efe9d8; }
+  .link-btn { background: none; border: none; color: #2a5db0; text-decoration: underline; cursor: pointer; font-size: inherit; padding: 0; }
+  .tool-results { margin-top: 1rem; border-top: 2px solid var(--border, #e2ddd2); padding-top: 1rem; min-height: 280px; }
+  .trow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; border-bottom: 1px dotted #d8d2c2; }
+  .trow span { color: #444; }
+  .trow.ttotal { border-bottom: none; font-size: 1.25rem; margin-top: 0.4rem; }
+  .trow.ttotal strong { color: #1a3a6b; }
+  .tnote { font-size: 0.85rem; color: #555; background: #f7f4ec; border-radius: 6px; padding: 0.6rem 0.8rem; }
+  .data-line { font-size: 0.8rem; color: #777; }
+  .tool-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .module { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; background: #fbfaf7; }
+  .module h3 { margin-top: 0; font-size: 1.05rem; }
+  .module-out { font-weight: 600; min-height: 2.5rem; }
+  .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
+  .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+  .do-next h2 { margin-top: 0; }
+  .dates-line { font-size: 0.9rem; color: #555; }
+  @media print {
+    header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }
+    .tool { border: none; }
+    body { background: #fff; color: #000; }
+  }
+  @media (max-width: 560px) { .tool { padding: 0.9rem; } }
+</style>
+
+<script>
+  import {
+    jetEstimate, breakEven, sanityCheck,
+    renderJetResults, fmtRange, fmtMoneyFull, fmtPeople,
+  } from '../../lib/jet-calc.js';
+  import data from '../../data/charter-data.json';
+
+  const $ = (id) => document.getElementById(id);
+  const cats = data.jetCategories;
+  const byId = (id) => cats.find((c) => c.id === id);
+
+  $('j-scat').innerHTML = cats
+    .map((c) => `<option value="${c.id}">${c.name} — ${c.currencySymbol}${c.low.toLocaleString('en-US')}–${c.currencySymbol}${c.high.toLocaleString('en-US')}/hr</option>`)
+    .join('');
+
+  function readInputs() {
+    const c = byId($('j-cat').value) || cats[0];
+    return {
+      cat: c,
+      rateLow: c.low, rateHigh: c.high, symbol: c.currencySymbol,
+      hours: Math.min(24, Math.max(0.5, Number($('j-hours').value) || 2)),
+      pos: Math.min(24, Math.max(0, Number($('j-pos').value) || 0)),
+      pax: Math.min(19, Math.max(1, Math.round(Number($('j-pax').value) || 1))),
+      fee: $('j-fee').value === '' ? null : Math.min(100, Math.max(0, Number($('j-fee').value) || 0)),
+      empty: $('j-empty').checked,
+    };
+  }
+
+  function render() {
+    const s = readInputs();
+    const est = jetEstimate({
+      rateLow: s.rateLow, rateHigh: s.rateHigh, hours: s.hours,
+      positioningHours: s.pos, feePct: s.fee, passengers: s.pax, emptyLeg: s.empty,
+    });
+    $('j-out').innerHTML = renderJetResults(est, s.symbol);
+    renderBreakEven(est, s);
+    renderSplit(est, s);
+    renderSanity(s);
+    syncUrl(s);
+  }
+
+  function renderBreakEven(est, s) {
+    const fare = Number($('j-fare').value);
+    if (!fare || fare <= 0) {
+      $('j-beout').textContent = 'Enter a first-class fare above to see the break-even point.';
+      return;
+    }
+    const [lo, hi] = breakEven({ jetLow: est.total[0], jetHigh: est.total[1], fare });
+    const perPax = `Jet: ${fmtRange(est.perPassenger, s.symbol, true)} each vs $${fare.toLocaleString('en-US')} first class. `;
+    const be = (lo == null || hi == null)
+      ? 'Break-even needs a valid fare.'
+      : `Break-even at about ${fmtPeople(lo)}–${fmtPeople(hi)} people — with that many splitting, the jet costs less per person.`;
+    $('j-beout').textContent = perPax + be;
+  }
+
+  function renderSplit(est, s) {
+    $('j-splitout').textContent =
+      `${s.pax} passenger${s.pax === 1 ? '' : 's'}: ${fmtRange(est.perPassenger, s.symbol, true)} each (before any fees you did not add).`;
+  }
+
+  function renderSanity(s) {
+    const c = byId($('j-scat').value) || cats[0];
+    const hours = Math.min(24, Math.max(0.5, Number($('j-shours').value) || 2));
+    const quote = Number($('j-squote').value) || 0;
+    const r = sanityCheck({ quote, rateLow: c.low, rateHigh: c.high, hours, positioningHours: 0 });
+    const range = `${c.currencySymbol}${Math.round(r.range[0]).toLocaleString('en-US')}–${c.currencySymbol}${Math.round(r.range[1]).toLocaleString('en-US')}`;
+    let msg;
+    if (r.verdict === 'below') {
+      msg = `Below the published range for a ${c.name.toLowerCase()} (${range}). Ask what is excluded — or whether it is an empty leg or a smaller aircraft.`;
+    } else if (r.verdict === 'above') {
+      msg = `Above the published range for a ${c.name.toLowerCase()} (${range})${r.pctAbove != null ? ` by about ${r.pctAbove}%` : ''}. Ask what is included: taxes, fees, positioning or waiting time.`;
+    } else if (r.verdict === 'within') {
+      msg = `Within the published range for a ${c.name.toLowerCase()} (${range})${r.positionPct != null ? ` — about ${r.positionPct}% of the way up` : ''}. Confirm the taxes, fees and positioning terms before deciding.`;
+    } else {
+      msg = 'Enter the quote you received to check it.';
+    }
+    $('j-sanout').textContent = msg;
+  }
+
+  function syncUrl(s) {
+    const q = new URLSearchParams({
+      cat: s.cat.id, hours: s.hours, pos: s.pos, pax: s.pax, empty: s.empty ? 1 : 0,
+    });
+    if (s.fee != null) q.set('fee', s.fee);
+    const fare = $('j-fare').value;
+    if (fare) q.set('fare', fare);
+    history.replaceState(null, '', '?' + q.toString());
+  }
+
+  function loadFromUrl() {
+    const q = new URLSearchParams(location.search);
+    if (![...q.keys()].length) return;
+    const set = (id, v) => { if (v !== null && v !== undefined && v !== '') $(id).value = v; };
+    set('j-cat', q.get('cat')); set('j-hours', q.get('hours')); set('j-pos', q.get('pos'));
+    set('j-pax', q.get('pax')); set('j-fee', q.get('fee')); set('j-fare', q.get('fare'));
+    if (q.get('empty') === '1') $('j-empty').checked = true;
+  }
+
+  function summaryText() {
+    const s = readInputs();
+    const est = jetEstimate({
+      rateLow: s.rateLow, rateHigh: s.rateHigh, hours: s.hours,
+      positioningHours: s.pos, feePct: s.fee, passengers: s.pax, emptyLeg: s.empty,
+    });
+    let txt = `Private jet estimate (Charter Cost Guide, data as of ${data.asOf}): ${s.cat.name}, ${s.hours} hours, ${s.pax} passengers. `;
+    txt += `Estimated total ${fmtRange(est.total, s.symbol, true)}${s.fee == null ? ' before taxes and fees' : ' including your taxes/fees figure'}; `;
+    txt += `per passenger ${fmtRange(est.perPassenger, s.symbol, true)}. Estimate only, not a quote.`;
+    return txt;
+  }
+
+  function chatMessage() {
+    const s = readInputs();
+    const est = jetEstimate({
+      rateLow: s.rateLow, rateHigh: s.rateHigh, hours: s.hours,
+      positioningHours: s.pos, feePct: s.fee, passengers: s.pax, emptyLeg: false,
+    });
+    return `Private jet estimate: ${s.cat.name}, ${s.hours}h, ${s.pax} of us = ${fmtRange(est.perPassenger, s.symbol, true)} each (before taxes/fees unless added). Who's in? (via Charter Cost Guide)`;
+  }
+
+  let started = false, timer = null;
+  function markUsed() {
+    if (!started) { started = true; ev('tool_start', { tool: 'jet_calculator' }); }
+    clearTimeout(timer);
+    timer = setTimeout(() => ev('tool_complete', { tool: 'jet_calculator' }), 2500);
+  }
+
+  document.querySelectorAll('#jet-form input, #jet-form select, .tool-modules input, .tool-modules select').forEach((el) => {
+    el.addEventListener('input', () => { render(); markUsed(); });
+    el.addEventListener('change', () => { render(); markUsed(); });
+  });
+
+  $('j-reset').addEventListener('click', () => {
+    $('j-cat').value = 'light'; $('j-hours').value = 2; $('j-pos').value = 0;
+    $('j-pax').value = 4; $('j-fee').value = ''; $('j-empty').checked = false; $('j-fare').value = '';
+    history.replaceState(null, '', location.pathname); render();
+  });
+
+  async function copyText(txt) {
+    try { await navigator.clipboard.writeText(txt); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    ev('tool_copy', { tool: 'jet_calculator' });
+  }
+  $('j-copy').addEventListener('click', () => copyText(summaryText()));
+  $('j-copylink').addEventListener('click', () => copyText(location.href));
+  $('j-chatmsg').addEventListener('click', () => copyText(chatMessage()));
+  $('j-print').addEventListener('click', () => { ev('tool_print', { tool: 'jet_calculator' }); window.print(); });
+
+  loadFromUrl();
+  render();
+</script>
