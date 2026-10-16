@@ -1,0 +1,90 @@
+---
+// Article feedback widget: 3-emoji rating, fires a GA4 article_feedback event.
+// No cookies, no storage, no PII. Rendered only when the guide's frontmatter
+// sets feedback: true.
+---
+
+<section class="feedback-widget" aria-label="Was this guide helpful?">
+  <p class="feedback-prompt">Was this guide helpful?</p>
+  <div class="feedback-buttons" role="group" aria-label="Rate this guide">
+    <button type="button" class="feedback-btn" data-rating="loved" aria-label="Loved it">
+      <span class="feedback-emoji" aria-hidden="true">😍</span>
+      <span class="feedback-label">Loved it</span>
+    </button>
+    <button type="button" class="feedback-btn" data-rating="helpful" aria-label="Helpful">
+      <span class="feedback-emoji" aria-hidden="true">🙂</span>
+      <span class="feedback-label">Helpful</span>
+    </button>
+    <button type="button" class="feedback-btn" data-rating="not_helpful" aria-label="Not really">
+      <span class="feedback-emoji" aria-hidden="true">😕</span>
+      <span class="feedback-label">Not really</span>
+    </button>
+  </div>
+  <p class="feedback-thanks" hidden>Thanks for your feedback!</p>
+</section>
+
+<script is:inline>
+;(function(){
+  "use strict";
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if(!root || !root.classList.contains('feedback-widget')) return;
+  var buttons = root.querySelector('.feedback-buttons');
+  var thanks = root.querySelector('.feedback-thanks');
+  buttons.addEventListener('click', function(e){
+    var btn = e.target && e.target.closest ? e.target.closest('.feedback-btn') : null;
+    if(!btn || btn.disabled) return;
+    var rating = btn.getAttribute('data-rating');
+    try{
+      if(typeof gtag === 'function'){
+        gtag('event', 'article_feedback', { rating: rating, page_path: location.pathname });
+      }
+    }catch(err){}
+    var all = buttons.querySelectorAll('.feedback-btn');
+    for(var i=0;i<all.length;i++){ all[i].disabled = true; }
+    btn.classList.add('is-selected');
+    buttons.hidden = true;
+    thanks.hidden = false;
+  });
+})();
+</script>
+
+<style>
+  .feedback-widget{
+    margin: var(--s8) 0;
+    padding: var(--s6);
+    border: 1px solid var(--line, #e5e0d5);
+    border-radius: 12px;
+    text-align: center;
+    background: var(--card, #faf8f3);
+  }
+  .feedback-prompt{
+    font-weight: 600;
+    margin: 0 0 var(--s4);
+  }
+  .feedback-buttons{
+    display: flex;
+    gap: var(--s4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .feedback-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--s3) var(--s5);
+    border: 1px solid var(--line, #e5e0d5);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    min-width: 96px;
+    min-height: 48px;
+    font: inherit;
+  }
+  .feedback-btn:hover:not(:disabled){ border-color: var(--accent, #7A5C25); }
+  .feedback-btn:disabled{ cursor: default; opacity: .55; }
+  .feedback-btn.is-selected{ border-color: var(--accent, #7A5C25); opacity: 1; }
+  .feedback-emoji{ font-size: 1.75rem; line-height: 1; }
+  .feedback-label{ font-size: .85rem; }
+  .feedback-thanks{ font-weight: 600; margin: 0; }
+</style>

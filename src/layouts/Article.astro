@@ -10,6 +10,7 @@ import Faq from '../components/Faq.astro';
 import AffCta from '../components/AffCta.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Sources from '../components/Sources.astro';
+import FeedbackWidget from '../components/FeedbackWidget.astro';
 import Card from '../components/Card.astro';
 import { SITE_NAME, SITE_URL, EDITOR_DISPLAY_NAME, HAS_CONTACT_EMAIL, CONTACT_EMAIL } from '../config';
 
@@ -90,6 +91,7 @@ const contactLine = HAS_CONTACT_EMAIL
         <slot />
         {primaryProgram && <AffCta program={primaryProgram} context={entry.data.urlSlug} />}
         {faq.length > 0 && <Faq items={faq} />}
+        {entry.data.feedback === true && <FeedbackWidget />}
         <Sources items={sources} />
         <p class="editorial-note">This guide is general information, not professional advice. Prices are indicative and change with season, route and availability. {contactLine}</p>
       </div>

@@ -18,6 +18,7 @@ const guides = defineCollection({
     related: z.array(z.string()).default([]),
     faq: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
     sources: z.array(z.object({ name: z.string(), url: z.string().url(), accessed: z.string() })).default([]),
+    feedback: z.boolean().optional(),
   }),
 });
 
