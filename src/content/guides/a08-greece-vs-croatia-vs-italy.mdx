@@ -5,8 +5,8 @@ description: 'Comparing Greece, Croatia and Italy for a yacht charter: typical c
 hub: 'yacht-charter'
 urlSlug: 'greece-vs-croatia-vs-italy'
 published: 2026-10-13
-updated: 2026-10-13
-dataAsOf: 2026-10-13
+updated: 2026-10-17
+dataAsOf: 2026-10-17
 shortAnswer: 'Croatia and Italy publish the clearest cost data: Croatia adds about 13% charter tax and Italy about 22% VAT on the base fee, with 80 to 100 ft yachts sampling $41,000 to $94,000 per week in Croatia and $42,000 to $80,000 in Italy. Greece suits island-hopping variety; we could not source reliable Greece-specific figures.'
 primaryProgram: 'boatbookings'
 heroImage: 'https://images.pexels.com/photos/31326411/pexels-photo-31326411.jpeg?auto=compress&cs=tinysrgb&w=1600'
@@ -25,6 +25,9 @@ sources:
   - name: 'BoatCrowd — Yacht Charter Cost Guides (Italy, France, Bahamas, Croatia, Grenadines)'
     url: 'https://www.boatcrowd.com/iate-charter-italia/cost'
     accessed: '13 October 2026'
+  - name: 'IYC — Yacht Charter Taxes & VAT (Updated 2026)'
+    url: 'https://iyc.com/charter_taxes_vat/'
+    accessed: '17 October 2026'
   - name: 'YachtCharterFleet — Yacht Charter Costs Explained'
     url: 'https://www.yachtcharterfleet.com/advice/yacht-charter-costs-explained.htm'
     accessed: '13 October 2026'
@@ -33,7 +36,7 @@ sources:
 import CostTable from '../../components/CostTable.astro';
 import Callout from '../../components/Callout.astro';
 
-A Greece vs Croatia vs Italy yacht charter comparison comes down to three things: what it costs, what the cruising feels like, and how predictable the total is. Croatia and Italy have the clearest published cost data of the three; Greece wins on island variety but we could not source reliable Greece-specific cost figures, so this guide says so plainly instead of guessing.
+Greece, Croatia or Italy — which coast gets your charter week? The choice comes down to three things: what it costs, what the cruising feels like, and how predictable the total is. Croatia and Italy have the clearest published cost data of the three; Greece wins on island variety but we could not source reliable Greece-specific cost figures, so this guide says so plainly instead of guessing.
 
 For the full breakdown of what any charter costs, see our [yacht charter cost guide](/yacht-charter/cost/). If this is your first charter entirely, read [how to charter a yacht for the first time](/yacht-charter/how-to-charter-a-yacht/) first. If Croatia is on your shortlist, our [Croatia yacht charter guide](/yacht-charter/croatia/) covers its costs, routes and licence rules in depth.
 
@@ -46,12 +49,14 @@ For the full breakdown of what any charter costs, see our [yacht charter cost gu
     ["80–100 ft base fee sample", "$41,000 to $94,000 / week", "$42,000 to $80,000 / week", "No reliable published sample"],
     ["Charter tax / VAT", "About 13%", "About 22%", "No reliable published figure"],
     ["Typical APA", "About 35%", "About 35%", "Ask your broker"],
-    ["Coastline character", "Over a thousand islands, sheltered cruising", "Long mainland coast plus islands (Sardinia, Sicily, Amalfi)", "Vast island groups across the Aegean and Ionian seas"],
+    ["Coastline character", "A dense scatter of islands, sheltered cruising", "Long mainland coast plus islands (Sardinia, Sicily, Amalfi)", "Vast island groups across the Aegean and Ionian seas"],
     ["Typical trip style", "Island-hopping with short passages", "Mix of cultural ports and island anchorages", "Island-hopping; longer passages between groups"],
   ]}
   source="BoatCrowd regional cost guides (Croatia, Italy figures)"
   dataAsOf="13 October 2026"
 />
+
+What this means for you: Croatia and Italy let you budget from published numbers; Greece needs written quotes before you can compare — never assume it is cheaper or dearer without them.
 
 <Callout type="note" label="On the blanks">
 Where a cell is blank, we could not find a published, sourced figure — so we left it blank rather than estimate. Ask your broker for a written quote for that destination.
@@ -63,6 +68,8 @@ This is where Croatia and Italy can be compared properly, because the published 
 
 - **Croatia:** base fee samples of $41,000 to $94,000 per week, APA about 35%, charter tax about 13%.
 - **Italy:** base fee samples of $42,000 to $80,000 per week, APA about 35%, VAT about 22%.
+
+These tax figures are corroborated by IYC's 2026 charter-tax guide, which lists 13% for Croatia and 22% for Italy (source: IYC, accessed 17 October 2026).
 
 Work the tax into your mental total early. On a $60,000 base fee, Croatia's 13% adds $7,800 while Italy's 22% adds $13,200 — a $5,400 swing on tax alone, before any difference in the base fee itself. Both totals then still need APA (about 35% in these samples) and a crew tip of around 10%.
 
@@ -86,17 +93,11 @@ To show how the tax difference plays out, here is the same illustrative yacht co
   dataAsOf="13 October 2026"
 />
 
-The $5,400 gap comes entirely from the tax line. On lower base fees the gap shrinks; on higher ones it grows. This is why comparing headline weekly rates across countries without the tax line is misleading.
+What this means for you: the $5,400 gap comes entirely from the tax line — comparing headline weekly rates across countries without the tax line is misleading. On lower base fees the gap shrinks; on higher ones it grows.
 
 ## When to go
 
-Season affects both price and experience, but the details differ by country and even by coastline within a country. Rather than memorising month charts from a third party, ask your broker three questions:
-
-1. Which weeks do you treat as peak season for this yacht and region?
-2. How does the base fee change between peak and shoulder weeks?
-3. What is the weather and sea-state trade-off in the shoulder weeks?
-
-Peak weeks bring the warmest water and the busiest anchorages; shoulder weeks often bring lower rates and quieter ports. Neither is right for everyone — match the season to your group's tolerance for heat, crowds and the occasional unsettled day.
+Season affects both price and experience, but the details differ by country and even by coastline within a country. Peak weeks bring the warmest water and the busiest anchorages; shoulder weeks often bring lower rates and quieter ports — match the season to your group's tolerance for heat, crowds and the occasional unsettled day. For the full seasonal picture, see our guide to the [best time to charter by destination](/yacht-charter/best-time-to-charter-by-destination/).
 
 ## Coastline and trip style
 
@@ -124,7 +125,7 @@ A few financial details that are easy to overlook when comparing destinations:
 - **Quote currency.** Mediterranean quotes are commonly issued in euros and Caribbean quotes in US dollars, but either can appear. When comparing a Croatia quote against an Italy quote, make sure you are comparing in one currency — and note the date of any conversion you do yourself.
 - **Where the APA is held and in what currency.** Confirm this before you transfer funds; exchange-rate movement between booking and embarkation is your risk unless the agreement says otherwise.
 - **What "plus expenses" includes.** The boundary between included costs and APA spending is set by the individual agreement, not by the country. Two Croatian quotes can differ on this — read both.
-- **Tipping custom.** Around 10% of the base fee is the commonly cited Mediterranean guidance; on very large yachts the percentage often comes down. When in doubt, ask your broker what is customary for the yacht size you are considering.
+- **Tipping custom.** Around 10% of the base fee is the commonly cited Mediterranean guidance ([see our crew tipping guide](/yacht-charter/crew-tipping-guide/)); on very large yachts the percentage often comes down. When in doubt, ask your broker what is customary for the yacht size you are considering.
 
 None of these should be deal-breakers for a destination — they are simply lines to confirm in writing before you compare totals.
 
@@ -138,7 +139,7 @@ Both formats exist in all three countries, but the practical questions differ:
 
 If you are torn between the two formats, the rule is simple: match the format to your licences, your experience and the pace you want — not to the destination's reputation.
 
-## Who each destination suits
+## Which destination suits your trip?
 
 Use this as a starting point for the conversation with your broker, not a verdict:
 
@@ -148,7 +149,7 @@ Use this as a starting point for the conversation with your broker, not a verdic
 
 All three reward the same preparation: identical briefs to two or three brokers, line-by-line comparison, and the tax line read before the total.
 
-## How to choose
+## Do this next
 
 1. **Rank your priorities.** If budget predictability matters most, Croatia and Italy give you the firmest published numbers. If island variety matters most, Greece deserves the quotes.
 2. **Fix the trip first.** Guest count, dates and flexibility, then destination — the same order as our [first-timer's guide](/yacht-charter/how-to-charter-a-yacht/) recommends.
