@@ -15,9 +15,12 @@ interface Props {
   guides: CollectionEntry<'guides'>[];
   showAffCta?: boolean;
   affCtaProgram?: string;
+  toolHref?: string;
+  toolTitle?: string;
+  toolText?: string;
 }
 
-const { title, description, intro, hub, guides, showAffCta = false, affCtaProgram = 'boatbookings' } = Astro.props;
+const { title, description, intro, hub, guides, showAffCta = false, affCtaProgram = 'boatbookings', toolHref, toolTitle, toolText } = Astro.props;
 const url = `${SITE_URL}/${hub}/`;
 const hubLabel = { 'yacht-charter': 'Yacht Charter', 'private-jets': 'Private Jets', 'planning': 'Planning' }[hub];
 const [featured, ...rest] = guides;
@@ -37,6 +40,19 @@ function cardImage(g: CollectionEntry<'guides'>): string | undefined {
       <h1>{title}</h1>
       <p class="lede">{intro}</p>
     </div>
+
+    {toolHref && toolTitle && (
+      <section aria-label="Cost calculator" style="margin: var(--s7) 0;">
+        <div class="card-grid" style="grid-template-columns: 1fr;">
+          <Card
+            kicker="Free tool"
+            title={toolTitle}
+            description={toolText ?? ''}
+            href={toolHref}
+          />
+        </div>
+      </section>
+    )}
 
     {featured ? (
       <section aria-label="Featured guide" style="margin: var(--s7) 0;">

@@ -367,3 +367,18 @@ table, .dyn-est-body select { font-variant-numeric: lining-nums tabular-nums; }
   .dyn-ptab { padding: 9px 18px; font-size: 14px; }
   .dyn-faq-q { font-size: 16px; padding: 16px 18px; }
 }
+
+/* ---------- Homepage tool cards (replaced the old estimator, Oct 2026) ---------- */
+.dyn-tool-eyebrow { font: 700 12.5px var(--font-body); text-transform: uppercase; letter-spacing: .12em; color: var(--teal); margin: 0 0 8px; }
+.dyn-tool-h { font-size: 25px; line-height: 1.2; color: var(--navy-900); margin: 0 0 6px; }
+.dyn-tool-sub { font-size: 15px; color: var(--muted); margin: 0 0 16px; }
+.dyn-toolcard { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; text-decoration: none; margin-bottom: 12px; transition: border-color .15s ease, box-shadow .15s ease; }
+.dyn-toolcard:last-child { margin-bottom: 0; }
+.dyn-toolcard:hover { border-color: var(--brass); box-shadow: var(--shadow-2); }
+.dyn-toolcard > svg { flex: 0 0 auto; color: var(--teal); margin-top: 2px; }
+.dyn-toolcard-t { display: block; font: 700 18px var(--font-head); color: var(--navy-900); }
+.dyn-toolcard-d { display: block; font-size: 14.5px; color: var(--muted); margin-top: 4px; }
+.dyn-toolcard-a { display: block; font-weight: 700; font-size: 15px; color: var(--teal); margin-top: 8px; }
+@media (max-width: 560px) {
+  .dyn-tool-h { font-size: 22px; }
+}

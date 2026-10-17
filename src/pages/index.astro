@@ -81,53 +81,35 @@ const faqSchema = {
       <div class="dyn-hero-copy">
         <p class="eyebrow" style="color: var(--brass-300);">Independent charter cost guides</p>
         <h1>Know what a charter really costs.</h1>
-        <p class="lede">Plain-English yacht and private jet price guides with sourced figures and dates — no sponsored rankings, no invented numbers. Start with a 30-second estimate.</p>
+        <p class="lede">Plain-English yacht and private jet price guides with sourced figures and dates — no sponsored rankings, no invented numbers. Try the free cost calculators.</p>
         <div class="dyn-hero-points">
           <span><b>✓</b> Sourced prices</span>
           <span><b>✓</b> Updated Oct 2026</span>
           <span><b>✓</b> No sponsored rankings</span>
         </div>
       </div>
-      <div class="dyn-est" id="estimator">
-        <div class="dyn-est-tabs" role="tablist" aria-label="Estimate type">
-          <button class="dyn-est-tab active" data-etab="yacht" role="tab" aria-selected="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M12 3l7 10H5z"/><path d="M3 16h18l-2.5 4.5h-13z"/></svg> Yacht estimate</button>
-          <button class="dyn-est-tab" data-etab="jet" role="tab" aria-selected="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5L21.5 3.5l-8 19-2.8-7.7z"/><path d="M10.7 13.8l4.5 4.5"/></svg> Jet estimate</button>
+      <div class="dyn-est dyn-tools" id="calculators" aria-label="Cost calculators">
+        <div class="dyn-est-body">
+          <p class="dyn-tool-eyebrow">Free cost calculators</p>
+          <h2 class="dyn-tool-h">Check the numbers before you talk to a broker</h2>
+          <p class="dyn-tool-sub">Run your own trip — no signup, no invented figures.</p>
+          <a class="dyn-toolcard" href="/yacht-charter/cost-calculator/">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M12 3l7 10H5z"/><path d="M3 16h18l-2.5 4.5h-13z"/></svg>
+            <span>
+              <span class="dyn-toolcard-t">Yacht charter cost calculator</span>
+              <span class="dyn-toolcard-d">Base fee, APA, tax and tip by yacht type and weeks — with per-guest maths.</span>
+              <span class="dyn-toolcard-a">Open the calculator →</span>
+            </span>
+          </a>
+          <a class="dyn-toolcard" href="/private-jets/cost-calculator/">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12.5L21.5 3.5l-8 19-2.8-7.7z"/><path d="M10.7 13.8l4.5 4.5"/></svg>
+            <span>
+              <span class="dyn-toolcard-t">Private jet cost estimator</span>
+              <span class="dyn-toolcard-d">Hourly rates by jet size, per-passenger costs and a first-class break-even line.</span>
+              <span class="dyn-toolcard-a">Open the estimator →</span>
+            </span>
+          </a>
         </div>
-        <div class="dyn-est-body" id="est-yacht" role="tabpanel">
-          <label for="ytype">Yacht type</label>
-          <select id="ytype">
-            <option value="bareboat">Bareboat sailing yacht — €3.5k–9k / week</option>
-            <option value="small">Small crewed yacht / catamaran — from $10k / week</option>
-            <option value="midcat" selected>Mid-size crewed catamaran — $15k–45k / week</option>
-            <option value="motor80100">Motor yacht, 80–100 ft — $41k–94k / week</option>
-            <option value="large">Large motor yacht — $100k+ / week</option>
-          </select>
-          <label for="yweeks">Duration</label>
-          <div class="dyn-est-row">
-            <input type="range" id="yweeks" min="1" max="4" value="1" step="1" aria-label="Charter duration in weeks" />
-            <span class="dyn-est-val" id="yweeks-v">1 week</span>
-          </div>
-          <div class="dyn-est-out"><span class="lbl">Estimated before tax</span><span class="num" id="yout">$21k – $63k</span></div>
-          <p class="dyn-est-note">Base fee × weeks × 1.4 (adds ~30% APA + ~10% tip). Before tax. Indicative only — season, route and availability move the total.</p>
-          <a class="dyn-est-link" href="/yacht-charter/cost/">See how we calculate this →</a>
-        </div>
-        <div class="dyn-est-body" id="est-jet" role="tabpanel" hidden>
-          <label for="jtype">Aircraft size</label>
-          <select id="jtype">
-            <option value="light" selected>Light jet (6 seats) — $3.5k–6.5k / hour</option>
-            <option value="mid">Midsize jet (8 seats) — $4.5k–8.5k / hour</option>
-            <option value="heavy">Large / heavy jet (12+ seats) — $7k–13k / hour</option>
-          </select>
-          <label for="jhours">Flight time</label>
-          <div class="dyn-est-row">
-            <input type="range" id="jhours" min="1" max="10" value="2" step="1" aria-label="Flight time in hours" />
-            <span class="dyn-est-val" id="jhours-v">2 hrs</span>
-          </div>
-          <div class="dyn-est-out"><span class="lbl">Estimated before taxes &amp; fees</span><span class="num" id="jout">$7k – $13k</span></div>
-          <p class="dyn-est-note">Hourly rate × hours, before taxes &amp; fees — ask for an all-in quote. Positioning can add more.</p>
-          <a class="dyn-est-link" href="/private-jets/cost/">See how we calculate this →</a>
-        </div>
-        <p class="dyn-est-tools">Want the full breakdown — APA, tax, tip, per-guest costs and a quote sanity check? Try the <a href="/yacht-charter/cost-calculator/">yacht charter cost calculator</a> or the <a href="/private-jets/cost-calculator/">private jet cost estimator</a>. Free, no signup.</p>
       </div>
     </div>
   </section>
@@ -274,42 +256,6 @@ const faqSchema = {
 (function(){
   "use strict";
   function ev(name, params){ if(typeof gtag==='function'){ try{ gtag('event', name, params||{}); }catch(e){} } }
-  // ---------- estimator (real published ranges from our guides) ----------
-  var YACHT = {
-    bareboat:{cur:'€',low:3500,high:9000},
-    small:{cur:'$',low:10000,high:null},
-    midcat:{cur:'$',low:15000,high:45000},
-    motor80100:{cur:'$',low:41000,high:94000},
-    large:{cur:'$',low:100000,high:null}
-  };
-  var JET = { light:{low:3500,high:6500}, mid:{low:4500,high:8500}, heavy:{low:7000,high:13000} };
-  function fmt(n){ return n>=1000 ? (Math.round(n/100)/10).toString().replace(/\.0$/,'')+'k' : String(Math.round(n)); }
-  function yachtCalc(){
-    var t = YACHT[document.getElementById('ytype').value];
-    var w = +document.getElementById('yweeks').value;
-    document.getElementById('yweeks-v').textContent = w + (w>1?' weeks':' week');
-    var lo = Math.round(t.low*w*1.4), hi = t.high ? Math.round(t.high*w*1.4) : null;
-    document.getElementById('yout').textContent = t.cur + fmt(lo) + (hi ? ' – '+t.cur+fmt(hi) : '+');
-  }
-  function jetCalc(){
-    var t = JET[document.getElementById('jtype').value];
-    var h = +document.getElementById('jhours').value;
-    document.getElementById('jhours-v').textContent = h + (h>1?' hrs':' hr');
-    document.getElementById('jout').textContent = '$'+fmt(Math.round(t.low*h))+' – $'+fmt(Math.round(t.high*h));
-  }
-  ['ytype','yweeks'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='ytype'?'change':'input', function(){ yachtCalc(); estUsed('yacht'); }); });
-  ['jtype','jhours'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener(id==='jtype'?'change':'input', function(){ jetCalc(); estUsed('jet'); }); });
-  yachtCalc(); jetCalc();
-  // estimator engagement: start on first input, complete debounced with result range
-  var estStarted = false, estTimer = null;
-  function estUsed(kind){
-    if(!estStarted){ estStarted = true; ev('estimator_start',{charter_type:kind, page_path:location.pathname}); }
-    clearTimeout(estTimer);
-    estTimer = setTimeout(function(){
-      var out = kind==='yacht' ? document.getElementById('yout') : document.getElementById('jout');
-      ev('estimator_complete',{charter_type:kind, estimate_range:(out&&out.textContent||'').trim(), page_path:location.pathname});
-    }, 2000);
-  }
   // ---------- tabs ----------
   function wireTabs(tabSel, panelAttr){
     document.querySelectorAll(tabSel).forEach(function(b){
@@ -325,7 +271,7 @@ const faqSchema = {
       });
     });
   }
-  wireTabs('.dyn-est-tab'); wireTabs('.dyn-ptab');
+  wireTabs('.dyn-ptab');
   // ---------- counters ----------
   var cio = new IntersectionObserver(function(es){ es.forEach(function(e){
     if(!e.isIntersecting) return;
