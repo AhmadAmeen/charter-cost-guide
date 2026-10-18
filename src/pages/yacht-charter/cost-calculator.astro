@@ -115,6 +115,49 @@ const tipRegionOptions = data.tipRanges
   .join('');
 ---
 
+
+<style>
+  .short-answer { font-size: 1.1rem; border-left: 4px solid var(--gold, #c9a227); padding-left: 1rem; }
+  .trust-line { background: #fff8e6; border: 1px solid #e8d48b; border-radius: 8px; padding: 0.75rem 1rem; }
+  .tool { border: 1px solid var(--border, #e2ddd2); border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0; background: #fff; }
+  .tool fieldset { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; margin: 0 0 1rem; }
+  .tool legend { font-weight: 700; padding: 0 0.5rem; }
+  .pct-note { font-weight: 400; font-size: 0.85rem; color: #666; }
+  .tool label { display: block; font-weight: 600; font-size: 0.9rem; margin: 0.6rem 0 0.25rem; }
+  .tool input, .tool select { width: 100%; min-height: 48px; font-size: 1rem; padding: 0.5rem 0.75rem; border: 1px solid #b9b2a4; border-radius: 6px; background: #fff; }
+  .tool input:focus-visible, .tool select:focus-visible, .tool button:focus-visible { outline: 3px solid #2a5db0; outline-offset: 2px; }
+  .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+  .field-note { font-size: 0.85rem; color: #555; margin: 0.5rem 0 0; }
+  .tool-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .btn-ghost { min-height: 48px; padding: 0.6rem 1.1rem; border: 1px solid #8a8474; background: #f7f4ec; border-radius: 6px; font-size: 0.95rem; cursor: pointer; }
+  .btn-ghost:hover { background: #efe9d8; }
+  .link-btn { background: none; border: none; color: #2a5db0; text-decoration: underline; cursor: pointer; font-size: inherit; padding: 0; }
+  .tool-results { margin-top: 1rem; border-top: 2px solid var(--border, #e2ddd2); padding-top: 1rem; min-height: 320px; }
+  .trow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; border-bottom: 1px dotted #d8d2c2; }
+  .trow span { color: #444; }
+  .trow.ttotal { border-bottom: none; font-size: 1.25rem; margin-top: 0.4rem; }
+  .trow.ttotal strong { color: #1a3a6b; }
+  .tnote { font-size: 0.85rem; color: #555; background: #f7f4ec; border-radius: 6px; padding: 0.6rem 0.8rem; }
+  .data-line { font-size: 0.8rem; color: #777; }
+  .tool-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .module { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; background: #fbfaf7; }
+  .module h3 { margin-top: 0; font-size: 1.05rem; }
+  .module-out { font-weight: 600; min-height: 2.5rem; }
+  .btn-row { display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap; }
+  .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
+  .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+  .do-next h2 { margin-top: 0; }
+  .fwb { font-weight: 700; }
+  .itl { font-style: italic; }
+  .dates-line { font-size: 0.9rem; color: #555; }
+  @media print {
+    header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }
+    .tool { border: none; }
+    body { background: #fff; color: #000; }
+  }
+  @media (max-width: 560px) { .tool { padding: 0.9rem; } }
+</style>
+
 <Base title={title} description={description} canonical={url} jsonLd={[articleLd, breadcrumbLd, faqLd]}>
   <div class="container">
     <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Yacht Charter', href: '/yacht-charter/' }, { name: title, href: '/yacht-charter/cost-calculator/' }]} />
@@ -320,47 +363,7 @@ const tipRegionOptions = data.tipRanges
   </div>
 </Base>
 
-<style>
-  .short-answer { font-size: 1.1rem; border-left: 4px solid var(--gold, #c9a227); padding-left: 1rem; }
-  .trust-line { background: #fff8e6; border: 1px solid #e8d48b; border-radius: 8px; padding: 0.75rem 1rem; }
-  .tool { border: 1px solid var(--border, #e2ddd2); border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0; background: #fff; }
-  .tool fieldset { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; margin: 0 0 1rem; }
-  .tool legend { font-weight: 700; padding: 0 0.5rem; }
-  .pct-note { font-weight: 400; font-size: 0.85rem; color: #666; }
-  .tool label { display: block; font-weight: 600; font-size: 0.9rem; margin: 0.6rem 0 0.25rem; }
-  .tool input, .tool select { width: 100%; min-height: 48px; font-size: 1rem; padding: 0.5rem 0.75rem; border: 1px solid #b9b2a4; border-radius: 6px; background: #fff; }
-  .tool input:focus-visible, .tool select:focus-visible, .tool button:focus-visible { outline: 3px solid #2a5db0; outline-offset: 2px; }
-  .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
-  .field-note { font-size: 0.85rem; color: #555; margin: 0.5rem 0 0; }
-  .tool-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-  .btn-ghost { min-height: 48px; padding: 0.6rem 1.1rem; border: 1px solid #8a8474; background: #f7f4ec; border-radius: 6px; font-size: 0.95rem; cursor: pointer; }
-  .btn-ghost:hover { background: #efe9d8; }
-  .link-btn { background: none; border: none; color: #2a5db0; text-decoration: underline; cursor: pointer; font-size: inherit; padding: 0; }
-  .tool-results { margin-top: 1rem; border-top: 2px solid var(--border, #e2ddd2); padding-top: 1rem; min-height: 320px; }
-  .trow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; border-bottom: 1px dotted #d8d2c2; }
-  .trow span { color: #444; }
-  .trow.ttotal { border-bottom: none; font-size: 1.25rem; margin-top: 0.4rem; }
-  .trow.ttotal strong { color: #1a3a6b; }
-  .tnote { font-size: 0.85rem; color: #555; background: #f7f4ec; border-radius: 6px; padding: 0.6rem 0.8rem; }
-  .data-line { font-size: 0.8rem; color: #777; }
-  .tool-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-  .module { border: 1px solid var(--border, #e2ddd2); border-radius: 8px; padding: 1rem; background: #fbfaf7; }
-  .module h3 { margin-top: 0; font-size: 1.05rem; }
-  .module-out { font-weight: 600; min-height: 2.5rem; }
-  .btn-row { display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap; }
-  .privacy-line { font-size: 0.85rem; color: #555; margin-top: 1.25rem; }
-  .do-next { background: #f0f6ff; border: 1px solid #b9d0f0; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
-  .do-next h2 { margin-top: 0; }
-  .fwb { font-weight: 700; }
-  .itl { font-style: italic; }
-  .dates-line { font-size: 0.9rem; color: #555; }
-  @media print {
-    header, footer, .breadcrumbs, .tool-actions, .tool-modules, .privacy-line, .do-next, form { display: none !important; }
-    .tool { border: none; }
-    body { background: #fff; color: #000; }
-  }
-  @media (max-width: 560px) { .tool { padding: 0.9rem; } }
-</style>
+
 
 <script>
   import {
